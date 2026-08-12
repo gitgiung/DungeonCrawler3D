@@ -73,7 +73,6 @@ public class PlayerController : MonoBehaviour
             if (dir.sqrMagnitude > 0.001f)
             {
                 transform.rotation = Quaternion.LookRotation(dir);
-                //transform.forward = dir;
             }
         }
     }
@@ -89,7 +88,7 @@ public class PlayerController : MonoBehaviour
     {
         movement.Normalize();
         //transform.position += movement * Time.deltaTime * moveSpeed;
-        transform.Translate(movement * Time.deltaTime * moveSpeed, Space.World);
+        transform.Translate(movement * Time.deltaTime * moveSpeed, Space.Self);
     }
 
 
