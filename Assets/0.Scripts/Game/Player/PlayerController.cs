@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -21,6 +22,13 @@ public class PlayerController : MonoBehaviour
     private bool isGround;
     [Header("Jump")]
     [SerializeField] private float jumpForce = 5f;
+
+    [Header("Gizmos")]
+    public Color gizmosColor = Color.red;
+    [SerializeField, Range(1f, 5f)] private float gizmosRadius = 3f;
+
+    [Header("Interact UI")]
+    [SerializeField] private Image UI_F;
 
     private Rigidbody rb;
     private CapsuleCollider myCollider;
@@ -61,6 +69,7 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
         IsGround();
+        CheckInteractable();
     }
 
     public void Look()
@@ -121,7 +130,6 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-
     private void Jump()
     {
         //Space
@@ -137,4 +145,32 @@ public class PlayerController : MonoBehaviour
         Debug.Log("АјАн");
     }
 
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = gizmosColor;
+        Gizmos.DrawWireSphere(transform.position, gizmosRadius);
+    }
+
+    private void CheckInteractable()
+    {
+        Collider[] colliders = Physics.OverlapSphere(
+            transform.position, gizmosRadius
+            );
+
+        bool foundInteractable = false;
+
+        foreach(Collider collider in colliders)
+        {
+            if(collider.TryGetComponent<IInteractable>(out IInteractable interact))
+            {
+                foundInteractable = true;
+                if(Input.GetKeyDown(KeyCode.F))
+                {
+                    interact.Interact();
+                }
+                break;
+            }
+        }
+        UI_F.gameObject.SetActive(foundInteractable);
+    }
 }
