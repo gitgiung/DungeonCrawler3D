@@ -8,6 +8,7 @@ public class PlayerDash : MonoBehaviour
     [SerializeField] private float dashDuration = 0.2f;
     [SerializeField] private GameObject dashShadow;
 
+    public bool IsDashing { get; private set; }
     private PlayerMovement movement;
 
     private void Awake()
@@ -19,11 +20,6 @@ public class PlayerDash : MonoBehaviour
     {
         if (GameManager.Instance.State != GameState.Playing)
             return;
-
-        if (Input.GetKeyDown(KeyCode.LeftControl))
-        {
-            StartDash();
-        }
     }
 
     public void StartDash()
@@ -33,6 +29,7 @@ public class PlayerDash : MonoBehaviour
 
     private IEnumerator Dash()
     {
+        IsDashing = true;
         Vector3 dashDir = movement.LastMoveDirection;
 
         float timer = 0f;
@@ -54,5 +51,7 @@ public class PlayerDash : MonoBehaviour
 
             Destroy(obj, 0.2f);
         }
+
+        IsDashing = false;
     }
 }

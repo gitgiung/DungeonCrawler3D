@@ -2,10 +2,19 @@ using UnityEngine;
 
 public class PlayerCondition : MonoBehaviour, IDamageable
 {
+    private PlayerController player;
+
     [SerializeField] private int maxHP = 100;
+
+    public bool HasDead { get; private set; }
 
     public int CurrentHP { get; private set; }
     public int MaxHP => maxHP;
+
+    private void Awake()
+    {
+        player = GetComponent<PlayerController>();
+    }
 
     private void Start()
     {
@@ -26,6 +35,12 @@ public class PlayerCondition : MonoBehaviour, IDamageable
 
     private void Die()
     {
-        Debug.Log("Player is died");
+        HasDead = true;
+        player.ChangeState(player.DeadState);
+    }
+
+    public void Revive()
+    {
+        HasDead = false;
     }
 }

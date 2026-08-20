@@ -11,6 +11,9 @@ public class PlayerInteraction : MonoBehaviour
 
     [Header("Gizmos")]
     [SerializeField] Color gizmosColor = Color.yellow;
+    [SerializeField] private float posY = 1f;
+
+    private Vector3 pos;
 
     private void Update()
     {
@@ -23,15 +26,20 @@ public class PlayerInteraction : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.color = gizmosColor;
-        Gizmos.DrawWireSphere(transform.position,
+        pos = transform.position;
+        pos.y += posY;
+        Gizmos.DrawWireSphere(pos,
                 interactRadius);
     }
 
     private void CheckInteractable()
     {
+        pos = transform.position;
+        pos.y += posY;
+
         Collider[] colliders =
             Physics.OverlapSphere(
-                transform.position,
+                pos,
                 interactRadius
             );
 

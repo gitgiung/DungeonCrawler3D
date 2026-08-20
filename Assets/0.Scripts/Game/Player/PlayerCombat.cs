@@ -3,7 +3,7 @@ using UnityEngine;
 public class PlayerCombat : MonoBehaviour
 {
     [Header("Player Attack")]
-    [SerializeField] private int atkDmg;
+    [SerializeField] private int atkDamage;
     [SerializeField] private LayerMask targetLayer;
     [SerializeField, Range(0f, 3f)] private float attackHeight;
     [SerializeField, Range(0f, 3f)] private float attackRange;
@@ -11,6 +11,8 @@ public class PlayerCombat : MonoBehaviour
     [Header("Gizmos")]
     public Color gizmosColor = Color.red;
     [SerializeField, Range(1f, 5f)] private float attackRadius = 1f;
+
+    public bool HasAttack { get; private set; }
 
     private void Update()
     {
@@ -23,8 +25,10 @@ public class PlayerCombat : MonoBehaviour
         }
     }
 
-    private void Attack()
+    public void Attack()
     {
+        HasAttack = true;
+
         Vector3 pos = transform.position;
 
         pos.y += attackHeight;
@@ -41,10 +45,13 @@ public class PlayerCombat : MonoBehaviour
         {
             if (collider.TryGetComponent<IDamageable>(out IDamageable target))
             {
-                target.TakeDamage(atkDmg);
+                target.TakeDamage(atkDamage);
+                DamageFontManager.Instance.CreateText(atkDamage, collider.transform.position);
                 break;
             }
         }
+
+        HasAttack = false;
     }
 
     private void OnDrawGizmos()

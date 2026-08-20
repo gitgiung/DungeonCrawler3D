@@ -4,7 +4,12 @@ public class PlayerJump : MonoBehaviour
 {
     [Header("Jump")]
     [SerializeField] private float jumpForce = 5f;
-    private bool isGround;
+
+    [Header("IsGround")]
+    [SerializeField] private Transform groundCheck;
+    [SerializeField] private float groundCheckRadius = 0.1f;
+    [SerializeField] private LayerMask groundLayer;
+    public bool IsGround { get; private set; }
 
     private Rigidbody rb;
     private CapsuleCollider myCollider;
@@ -17,7 +22,7 @@ public class PlayerJump : MonoBehaviour
 
     private void FixedUpdate()
     {
-        IsGround();
+        CheckGround();
     }
 
     private void Update()
@@ -25,20 +30,29 @@ public class PlayerJump : MonoBehaviour
         if (GameManager.Instance.State != GameState.Playing)
             return;
 
-        Jump();
-    }
-
-    private void IsGround()
-    {
-        isGround = Physics.Raycast(transform.position, Vector3.down, myCollider.bounds.extents.y + 0.1f);
-    }
-
-    private void Jump()
-    {
-        //Space
-        if (Input.GetKeyDown(KeyCode.Space) && isGround)
+        if (Input.GetKeyDown(KeyCode.Space) && IsGround)
         {
-            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+            Jump();
         }
+    }
+
+    private void CheckGround()
+    {
+        IsGround = Physics.CheckSphere(
+        groundCheck.position,
+        groundCheckRadius,
+        groundLayer);
+
+        //Debug.DrawRay(
+        //groundCheck.position,
+        //Vector3.down * groundCheckRadius,
+        //isGround ? Color.green : Color.red
+        //);
+    }
+
+
+    public void Jump()
+    {
+        rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
     }
 }

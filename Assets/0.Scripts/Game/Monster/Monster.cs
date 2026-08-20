@@ -69,11 +69,12 @@ public class Monster : MonoBehaviour, IDamageable
     public void TakeDamage(int damage)
     {
         hp -= damage;
+
+        Debug.Log($"몬스터가 입은 피해: {damage}, 몬스터 체력: {hp}");
+
         if (hp <= 0)
         {
             Debug.Log($"{name} Dead");
         }
-
-        Debug.Log($"입은 피해: {damage}, 몬스터 체력: {hp}");
     }
 }

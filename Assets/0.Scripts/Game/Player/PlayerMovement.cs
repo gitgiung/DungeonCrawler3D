@@ -9,6 +9,9 @@ public class PlayerMovement : MonoBehaviour
     private float moveSpeed;
     private Vector3 movement;
 
+    private Vector2 vec;
+    //이동 상태 체크
+    public bool HasInput => vec.sqrMagnitude > 0.001f;
     public Vector3 Movement => movement;
 
     private Vector3 lastMoveDirection = Vector3.right;
@@ -28,7 +31,7 @@ public class PlayerMovement : MonoBehaviour
     void OnMove(InputValue inputValue)
     {
         //WASD, Arrow
-        Vector2 vec = inputValue.Get<Vector2>();
+        vec = inputValue.Get<Vector2>();
         movement = new Vector3(vec.x, 0, vec.y);
     }
 
@@ -51,14 +54,11 @@ public class PlayerMovement : MonoBehaviour
         Move();
     }
 
-    void Move()
+    public void Move()
     {
         Vector3 direction = movement.normalized;
 
-        rb.MovePosition(
-        rb.position +
-        direction * moveSpeed * Time.fixedDeltaTime
-    );
+        rb.MovePosition(rb.position + direction * moveSpeed * Time.fixedDeltaTime);
     }
 
     void Sprint()
