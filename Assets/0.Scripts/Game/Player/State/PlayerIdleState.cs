@@ -11,31 +11,37 @@ public class PlayerIdleState : IState
 
     public void Enter()
     {
-        //Debug.Log("Idle Enter");
+        Debug.Log("Idle Enter");
     }
 
     public void Exit()
     {
-        //Debug.Log("Idle Exit");
+        Debug.Log("Idle Exit");
     }
 
     public void Tick()
     {
-        if (player.Movement.HasInput)
+        if (player.HasMoveInput)
         {
             player.ChangeState(player.MoveState);
             return;
         }
 
-        if (Input.GetMouseButtonDown(0))
+        if (player.JumpInput && player.Jump.IsGround)
         {
-            player.ChangeState(player.AttackState);
+            player.ChangeState(player.JumpState);
             return;
         }
 
-        if (Input.GetKeyDown(KeyCode.LeftControl))
+        if (player.DashInput)
         {
             player.ChangeState(player.DashState);
+            return;
+        }
+
+        if (player.AttackInput)
+        {
+            player.ChangeState(player.AttackState);
             return;
         }
     }

@@ -10,9 +10,6 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 movement;
 
     private Vector2 vec;
-    //이동 상태 체크
-    public bool HasInput => vec.sqrMagnitude > 0.001f;
-    public Vector3 Movement => movement;
 
     private Vector3 lastMoveDirection = Vector3.right;
     public Vector3 LastMoveDirection => lastMoveDirection;
@@ -28,30 +25,29 @@ public class PlayerMovement : MonoBehaviour
         moveSpeed = walkSpeed;
     }
 
-    void OnMove(InputValue inputValue)
-    {
-        //WASD, Arrow
-        vec = inputValue.Get<Vector2>();
-        movement = new Vector3(vec.x, 0, vec.y);
-    }
-
-    private void Update()
-    {
-        if (GameManager.Instance.State != GameState.Playing)
-            return;
-
-        if (movement != Vector3.zero)
-        {
-            lastMoveDirection = movement.normalized;
-        }
-
-        Sprint();
-        Look();
-    }
-
     private void FixedUpdate()
     {
+        if (!canMove)
+            return;
+
         Move();
+    }
+
+    private bool canMove;
+
+    public void SetCanMove(bool value)
+    {
+        canMove = value;
+    }
+
+    public void SetMovement(Vector3 direction)
+    {
+        movement = direction;
+    }
+
+    public void SetSprint(bool sprint)
+    {
+        moveSpeed = sprint ? sprintSpeed : walkSpeed;
     }
 
     public void Move()
@@ -61,12 +57,9 @@ public class PlayerMovement : MonoBehaviour
         rb.MovePosition(rb.position + direction * moveSpeed * Time.fixedDeltaTime);
     }
 
-    void Sprint()
+    public void Stop()
     {
-        if (Input.GetKey(KeyCode.LeftShift))
-            moveSpeed = sprintSpeed;
-        else
-            moveSpeed = walkSpeed;
+        movement = Vector3.zero;
     }
 
     public void Look()

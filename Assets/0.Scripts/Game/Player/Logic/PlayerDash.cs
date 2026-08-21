@@ -16,12 +16,6 @@ public class PlayerDash : MonoBehaviour
         movement = GetComponent<PlayerMovement>();
     }
 
-    private void Update()
-    {
-        if (GameManager.Instance.State != GameState.Playing)
-            return;
-    }
-
     public void StartDash()
     {
         StartCoroutine(Dash());

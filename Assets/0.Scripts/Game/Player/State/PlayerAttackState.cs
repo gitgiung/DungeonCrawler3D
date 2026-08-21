@@ -4,6 +4,9 @@ public class PlayerAttackState : IState
 {
     private PlayerController player;
 
+    private float attackTimer;
+    private float attackDuration = 1f;
+
     public PlayerAttackState(PlayerController player)
     {
         this.player = player;
@@ -12,7 +15,9 @@ public class PlayerAttackState : IState
     public void Enter()
     {
         Debug.Log("Attack Enter");
-        
+        attackTimer = attackDuration;
+
+        player.Combat.Attack();
     }
 
     public void Exit()
@@ -22,9 +27,8 @@ public class PlayerAttackState : IState
 
     public void Tick()
     {
-        //공격 애니메이션 끝났는지 확인 후 Idle 또는 Move로 전환 가능
-
-        if (!player.Combat.HasAttack)
+        attackTimer -= Time.deltaTime;
+        if (attackTimer <= 0)
         {
             player.ChangeState(player.IdleState);
         }

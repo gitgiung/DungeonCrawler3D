@@ -9,30 +9,15 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField, Range(0f, 3f)] private float attackRange;
 
     [Header("Gizmos")]
-    public Color gizmosColor = Color.red;
+    private Color gizmosColor = Color.red;
     [SerializeField, Range(1f, 5f)] private float attackRadius = 1f;
-
-    public bool HasAttack { get; private set; }
-
-    private void Update()
-    {
-        if (GameManager.Instance.State != GameState.Playing)
-            return;
-
-        if (Input.GetMouseButtonDown(0))
-        {
-            Attack();
-        }
-    }
 
     public void Attack()
     {
-        HasAttack = true;
-
         Vector3 pos = transform.position;
 
+        pos += transform.forward * attackRange;
         pos.y += attackHeight;
-        pos.z += attackRange;
 
         Collider[] colliders =
             Physics.OverlapSphere(
@@ -50,8 +35,6 @@ public class PlayerCombat : MonoBehaviour
                 break;
             }
         }
-
-        HasAttack = false;
     }
 
     private void OnDrawGizmos()
@@ -60,8 +43,8 @@ public class PlayerCombat : MonoBehaviour
 
         Vector3 pos = transform.position;
 
+        pos += transform.forward * attackRange;
         pos.y += attackHeight;
-        pos.z += attackRange;
 
         Gizmos.DrawWireSphere(
             pos,

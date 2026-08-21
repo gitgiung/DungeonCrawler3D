@@ -22,11 +22,6 @@ public class PlayerDeadState : IState
 
     public void Tick()
     {
-        if(Input.GetKeyDown(KeyCode.R) && player.Condition.HasDead)
-        {
-            Debug.Log("Revived");
-            player.Condition.Revive();
-            player.ChangeState(player.IdleState);
-        }
+        
     }
 }

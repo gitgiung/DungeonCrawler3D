@@ -1,5 +1,5 @@
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
@@ -19,6 +19,16 @@ public class PlayerController : MonoBehaviour
     public PlayerDeadState DeadState { get; private set; }
     public PlayerAttackState AttackState { get; private set; }
     public PlayerHitState HitState { get; private set; }
+
+
+    // Input
+    public Vector2 MoveInput { get; private set; }
+    public bool HasMoveInput =>
+        MoveInput.sqrMagnitude > 0.001f;
+    public bool JumpInput { get; private set; }
+    public bool DashInput { get; private set; }
+    public bool AttackInput { get; private set; }
+    public bool SprintInput { get; private set; }
 
     private void Awake()
     {
@@ -45,16 +55,54 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
+        if (GameManager.Instance.State != GameState.Playing)
+            return;
+
         currentState?.Tick();
+
+        Movement.Look();
+
+        //한 프레임짜리 입력 초기화
+        JumpInput = false;
+        DashInput = false;
+        AttackInput = false;
     }
 
-    public void ChangeState(IState state)
+    public void OnMove(InputValue value)
     {
-        if (currentState == state)
+        MoveInput = value.Get<Vector2>();
+    }
+
+    public void OnJump(InputValue value)
+    {
+        if (value.isPressed)
+            JumpInput = true;
+    }
+
+    public void OnDash(InputValue value)
+    {
+        if (value.isPressed)
+            DashInput = true;
+    }
+
+    public void OnAttack(InputValue value)
+    {
+        if (value.isPressed)
+            AttackInput = true;
+    }
+
+    public void OnSprint(InputValue value)
+    {
+        SprintInput = value.isPressed;
+    }
+
+    public void ChangeState(IState newState)
+    {
+        if (currentState == newState)
             return;
 
         currentState?.Exit();
-        currentState = state;
+        currentState = newState;
         currentState?.Enter();
     }
 }
