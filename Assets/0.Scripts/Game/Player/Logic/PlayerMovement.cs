@@ -3,18 +3,20 @@ using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [Header("Player Movement")]
-    [SerializeField] private float walkSpeed = 5f;
-    [SerializeField] private float sprintSpeed = 10f;
     private float moveSpeed;
     private Vector3 movement;
-
-    private Vector2 vec;
 
     private Vector3 lastMoveDirection = Vector3.right;
     public Vector3 LastMoveDirection => lastMoveDirection;
 
     private Rigidbody rb;
+
+    private PlayerModel model;
+
+    public void Initialize(PlayerModel model)
+    {
+        this.model = model;
+    }
 
     private void Awake()
     {
@@ -22,7 +24,7 @@ public class PlayerMovement : MonoBehaviour
     }
     private void Start()
     {
-        moveSpeed = walkSpeed;
+        moveSpeed = model.WalkSpeed;
     }
 
     private void FixedUpdate()
@@ -47,7 +49,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void SetSprint(bool sprint)
     {
-        moveSpeed = sprint ? sprintSpeed : walkSpeed;
+        moveSpeed = sprint ? model.SprintSpeed : model.WalkSpeed;
     }
 
     public void Move()
@@ -69,6 +71,9 @@ public class PlayerMovement : MonoBehaviour
         {
             Vector3 dir = hit.point - transform.position;
             dir.y = 0f;
+
+            lastMoveDirection = dir.normalized;
+
             if (dir.sqrMagnitude > 0.001f)
             {
                 transform.rotation = Quaternion.LookRotation(dir);

@@ -12,13 +12,11 @@ public class PlayerMoveState : IState
 
     public void Enter()
     {
-        Debug.Log("Move Enter");
         player.Movement.SetCanMove(true);
     }
 
     public void Exit()
     {
-        Debug.Log("Move Exit");
         player.Movement.SetCanMove(false);
         player.Movement.Stop();
     }

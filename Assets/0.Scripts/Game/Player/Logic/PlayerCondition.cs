@@ -4,12 +4,17 @@ public class PlayerCondition : MonoBehaviour, IDamageable
 {
     private PlayerController player;
 
-    [SerializeField] private int maxHP = 100;
-
     public bool HasDead { get; private set; }
 
     public int CurrentHP { get; private set; }
-    public int MaxHP => maxHP;
+    public int MaxHP => model.MaxHP;
+
+    private PlayerModel model;
+
+    public void Initialize(PlayerModel model)
+    {
+        this.model = model;
+    }
 
     private void Awake()
     {
@@ -18,7 +23,7 @@ public class PlayerCondition : MonoBehaviour, IDamageable
 
     private void Start()
     {
-        CurrentHP = maxHP;
+        CurrentHP = model.MaxHP;
     }
 
     public void TakeDamage(int damage)

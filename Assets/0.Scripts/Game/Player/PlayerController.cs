@@ -5,6 +5,7 @@ public class PlayerController : MonoBehaviour
 {
     private IState currentState;
 
+    public PlayerModel Model { get; private set; }
     public PlayerMovement Movement { get; private set; }
     public PlayerJump Jump { get; private set; }
     public PlayerDash Dash { get; private set; }
@@ -32,6 +33,7 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
+        Model = GetComponent<PlayerModel>();
         Movement = GetComponent<PlayerMovement>();
         Jump = GetComponent<PlayerJump>();
         Dash = GetComponent<PlayerDash>();
@@ -46,6 +48,12 @@ public class PlayerController : MonoBehaviour
         DeadState = new PlayerDeadState(this);
         AttackState = new PlayerAttackState(this);
         HitState = new PlayerHitState(this);
+
+        Movement.Initialize(Model);
+        Jump.Initialize(Model);
+        Dash.Initialize(Model);
+        Combat.Initialize(Model);
+        Condition.Initialize(Model);
     }
 
     private void Start()
@@ -58,9 +66,9 @@ public class PlayerController : MonoBehaviour
         if (GameManager.Instance.State != GameState.Playing)
             return;
 
-        currentState?.Tick();
-
         Movement.Look();
+
+        currentState?.Tick();
 
         //한 프레임짜리 입력 초기화
         JumpInput = false;

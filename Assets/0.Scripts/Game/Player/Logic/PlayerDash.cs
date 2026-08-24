@@ -3,13 +3,15 @@ using System.Collections;
 
 public class PlayerDash : MonoBehaviour
 {
-    [Header("Dash")]
-    [SerializeField] private float dashSpeed = 15f;
-    [SerializeField] private float dashDuration = 0.2f;
-    [SerializeField] private GameObject dashShadow;
-
     public bool IsDashing { get; private set; }
     private PlayerMovement movement;
+
+    private PlayerModel model;
+
+    public void Initialize(PlayerModel model)
+    {
+        this.model = model;
+    }
 
     private void Awake()
     {
@@ -28,15 +30,15 @@ public class PlayerDash : MonoBehaviour
 
         float timer = 0f;
 
-        while (timer < dashDuration)
+        while (timer < model.DashDuration)
         {
             transform.position +=
-                dashDir * dashSpeed * Time.deltaTime;
+                model.DashSpeed * Time.deltaTime * dashDir;
 
             timer += Time.deltaTime;
 
             GameObject obj = Instantiate(
-                dashShadow,
+                model.DashShadow,
                 transform.position,
                 transform.rotation
             );

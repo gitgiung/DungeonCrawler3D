@@ -1,30 +1,93 @@
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Monster : MonoBehaviour, IDamageable
 {
-    private int hp, maxhp;
-    [SerializeField] private int atkDmg;
+    private IState currentState;
 
+    public MonsterIdleState IdleState { get; private set; }
+    
+    [Header("Targeting")]
     [SerializeField] private LayerMask targetLayer;
-    [SerializeField] private Transform target;
+    public LayerMask TargetLayer
+    {
+        get { return targetLayer; }
+    }
 
-    //공격 시간
-    float atkDuration = 2f;
-    float atkTimer = 0f;
+    [SerializeField] private Transform target;
+    public Transform Target
+    {
+        get { return target; }
+        set { target = value; }
+    }
+
+    [SerializeField] private float detectRange = 4f;
+    public float DetectRange
+    {
+        get { return detectRange; }
+        set { detectRange = value; }
+    }
+
+    [SerializeField] private float loseTargetRange = 6f;
+    public float LoseTargetRange
+    {
+        get { return loseTargetRange; }
+        set { loseTargetRange = value; }
+    }
+
+    [Header("Combat")]
+    [SerializeField] private int attackDamage;
+    public int AttackDamage
+    {
+        get { return attackDamage; }
+        set { attackDamage = value; }
+    }
+    [SerializeField] private float attackDelay;
+    public float AttackDelay
+    {
+        get { return attackDelay; }
+        set { attackDelay = value; }
+    }
+
+    [SerializeField] private int currentHP;
+    public int CurrentHP
+    {
+        get { return currentHP; }
+        set { currentHP = value; }
+    }
+
+    [SerializeField] private float moveSpeed;
+    public float MoveSpeed
+    {
+        get { return moveSpeed; }
+        set { moveSpeed = value; }
+    }
+
+    public NavMeshAgent Agent { get; set; }
+
+    public Vector3 startPos;
+
+    private void Awake()
+    {
+        IdleState = new MonsterIdleState(this);
+        Agent = GetComponent<NavMeshAgent>();
+    }
 
     private void Start()
     {
-        hp = maxhp = 50;
-
-        atkTimer = atkDuration;
+        currentHP = 50;
+        startPos = transform.position;
+        SetMoveSpeed(1f);
+        ChangeState(IdleState);
     }
 
     private void Update()
     {
-        if (target == null)
+        if (Agent == null || target == null)
             return;
 
-        LookAtMove();
+        currentState?.Tick();
     }
 
     public void Attack()
@@ -39,42 +102,54 @@ public class Monster : MonoBehaviour, IDamageable
             if (collider.TryGetComponent<IDamageable>(out IDamageable target))
             {
                 //가까운 플레이어 타격
-                target.TakeDamage(atkDmg);
+                target.TakeDamage(attackDamage);
                 break; //단일타격. 범위 공격은 break 없애면 됨
             }
         }
     }
 
-    private void LookAtMove()
+    public void LookAtMove(Vector3 target)
     {
-        transform.LookAt(target);
-
-        //실무에서는 SqrMagnitude 사용할것
-        float distance = Vector3.Distance(transform.position, target.position);
-        if (distance < 1.5f)
-        {
-            atkTimer -= Time.deltaTime;
-            if (atkTimer <= 0f)
-            {
-                atkTimer = atkDuration;
-                Attack();
-            }
-        }
-        else
-        {
-            transform.position = Vector3.MoveTowards(transform.position, target.position, 1f * Time.deltaTime); //1f: 이동속도
-        }
+        Agent.SetDestination(target);
     }
+
+    public void SetMoveSpeed(float multiplier)
+    {
+        Agent.speed = moveSpeed * multiplier;
+    }
+
 
     public void TakeDamage(int damage)
     {
-        hp -= damage;
+        currentHP -= damage;
 
-        Debug.Log($"몬스터가 입은 피해: {damage}, 몬스터 체력: {hp}");
+        Debug.Log($"{name}이(가) 입은 피해: {damage}, {name} 체력: {currentHP}");
 
-        if (hp <= 0)
+        if (currentHP <= 0)
         {
             Debug.Log($"{name} Dead");
+            ChangeState(new MonsterDeadState(this));
+        }
+    }
+
+    public void ChangeState(IState state)
+    {
+        currentState?.Exit();
+        currentState = state;
+        currentState?.Enter();
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (currentState == IdleState)
+        {
+            Gizmos.color = Color.yellowGreen;
+            Gizmos.DrawWireSphere(transform.position, DetectRange);
+        }
+        else
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(transform.position, LoseTargetRange);
         }
     }
 }

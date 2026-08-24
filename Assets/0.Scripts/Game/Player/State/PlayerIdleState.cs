@@ -11,12 +11,12 @@ public class PlayerIdleState : IState
 
     public void Enter()
     {
-        Debug.Log("Idle Enter");
+
     }
 
     public void Exit()
     {
-        Debug.Log("Idle Exit");
+
     }
 
     public void Tick()

@@ -2,36 +2,36 @@ using UnityEngine;
 
 public class PlayerCombat : MonoBehaviour
 {
-    [Header("Player Attack")]
-    [SerializeField] private int atkDamage;
-    [SerializeField] private LayerMask targetLayer;
-    [SerializeField, Range(0f, 3f)] private float attackHeight;
-    [SerializeField, Range(0f, 3f)] private float attackRange;
-
     [Header("Gizmos")]
-    private Color gizmosColor = Color.red;
-    [SerializeField, Range(1f, 5f)] private float attackRadius = 1f;
+    [SerializeField] private Color gizmosColor = Color.red;
+
+    private PlayerModel model;
+
+    public void Initialize(PlayerModel model)
+    {
+        this.model = model;
+    }
 
     public void Attack()
     {
         Vector3 pos = transform.position;
 
-        pos += transform.forward * attackRange;
-        pos.y += attackHeight;
+        pos += transform.forward * model.AttackRange;
+        pos.y += model.AttackHeight;
 
         Collider[] colliders =
             Physics.OverlapSphere(
                 pos,
-                attackRadius,
-                targetLayer
+                model.AttackRadius,
+                model.TargetLayer
             );
 
         foreach (Collider collider in colliders)
         {
             if (collider.TryGetComponent<IDamageable>(out IDamageable target))
             {
-                target.TakeDamage(atkDamage);
-                DamageFontManager.Instance.CreateText(atkDamage, collider.transform.position);
+                target.TakeDamage(model.AttackDamage);
+                DamageFontManager.Instance.CreateText(model.AttackDamage, collider.transform.position);
                 break;
             }
         }
@@ -39,16 +39,19 @@ public class PlayerCombat : MonoBehaviour
 
     private void OnDrawGizmos()
     {
+        if (model == null)
+            return;
+
         Gizmos.color = gizmosColor;
 
         Vector3 pos = transform.position;
 
-        pos += transform.forward * attackRange;
-        pos.y += attackHeight;
+        pos += transform.forward * model.AttackRange;
+        pos.y += model.AttackHeight;
 
         Gizmos.DrawWireSphere(
             pos,
-            attackRadius
+            model.AttackRadius
         );
     }
 }
