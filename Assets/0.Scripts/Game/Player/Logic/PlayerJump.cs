@@ -2,15 +2,18 @@ using UnityEngine;
 
 public class PlayerJump : MonoBehaviour
 {
+    private PlayerData data;
+
     public bool IsGround { get; private set; }
 
     private Rigidbody rb;
 
     private PlayerModel model;
 
-    public void Initialize(PlayerModel model)
+    public void Initialize(PlayerModel model, PlayerData data)
     {
         this.model = model;
+        this.data = data;
     }
 
     private void Awake()
@@ -32,6 +35,6 @@ public class PlayerJump : MonoBehaviour
 
     public void Jump()
     {
-        rb.AddForce(Vector3.up * model.JumpForce, ForceMode.Impulse);
+        rb.AddForce(Vector3.up * data.JumpForce, ForceMode.Impulse);
     }
 }

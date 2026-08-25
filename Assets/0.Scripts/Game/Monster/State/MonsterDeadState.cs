@@ -11,6 +11,9 @@ public class MonsterDeadState : IState
     public void Enter()
     {
         Debug.Log("∏ÛΩ∫≈Õ ªÁ∏¡");
+        monster.View.PlayDeath();
+
+        monster.Death();
     }
 
     public void Exit()

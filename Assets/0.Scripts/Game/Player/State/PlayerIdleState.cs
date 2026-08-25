@@ -11,7 +11,7 @@ public class PlayerIdleState : IState
 
     public void Enter()
     {
-
+        player.View.PlayIdle();
     }
 
     public void Exit()

@@ -3,6 +3,13 @@ using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
+    private PlayerData data;
+
+    public void Initialize(PlayerData data)
+    {
+        this.data = data;
+    }
+
     private float moveSpeed;
     private Vector3 movement;
 
@@ -11,20 +18,13 @@ public class PlayerMovement : MonoBehaviour
 
     private Rigidbody rb;
 
-    private PlayerModel model;
-
-    public void Initialize(PlayerModel model)
-    {
-        this.model = model;
-    }
-
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
     }
     private void Start()
     {
-        moveSpeed = model.WalkSpeed;
+        moveSpeed = data.WalkSpeed;
     }
 
     private void FixedUpdate()
@@ -49,7 +49,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void SetSprint(bool sprint)
     {
-        moveSpeed = sprint ? model.SprintSpeed : model.WalkSpeed;
+        moveSpeed = sprint ? data.SprintSpeed : data.WalkSpeed;
     }
 
     public void Move()

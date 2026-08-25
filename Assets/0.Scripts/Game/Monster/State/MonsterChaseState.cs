@@ -10,12 +10,13 @@ public class MonsterChaseState : IState
 
     public void Enter()
     {
-        Debug.Log("몬스터 움직임 진입");
+        Debug.Log("몬스터 추적 진입");
+        monster.View.PlayChase();
     }
 
     public void Exit()
     {
-        Debug.Log("몬스터 움직임 해제");
+        Debug.Log("몬스터 추적 해제");
     }
 
     public void Tick()

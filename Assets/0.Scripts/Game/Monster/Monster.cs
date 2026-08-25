@@ -1,10 +1,10 @@
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
 public class Monster : MonoBehaviour, IDamageable
 {
     private IState currentState;
+    public MonsterView View { get; private set; }
 
     public MonsterIdleState IdleState { get; private set; }
     
@@ -57,8 +57,8 @@ public class Monster : MonoBehaviour, IDamageable
         set { currentHP = value; }
     }
 
-    [SerializeField] private float moveSpeed;
-    public float MoveSpeed
+    [SerializeField] private int moveSpeed;
+    public int MoveSpeed
     {
         get { return moveSpeed; }
         set { moveSpeed = value; }
@@ -72,13 +72,14 @@ public class Monster : MonoBehaviour, IDamageable
     {
         IdleState = new MonsterIdleState(this);
         Agent = GetComponent<NavMeshAgent>();
+        View = GetComponent<MonsterView>();
     }
 
     private void Start()
     {
         currentHP = 50;
         startPos = transform.position;
-        SetMoveSpeed(1f);
+        SetMoveSpeed(0);
         ChangeState(IdleState);
     }
 
@@ -113,9 +114,9 @@ public class Monster : MonoBehaviour, IDamageable
         Agent.SetDestination(target);
     }
 
-    public void SetMoveSpeed(float multiplier)
+    public void SetMoveSpeed(int bit)
     {
-        Agent.speed = moveSpeed * multiplier;
+        Agent.speed = MoveSpeed << bit;
     }
 
 
@@ -130,6 +131,11 @@ public class Monster : MonoBehaviour, IDamageable
             Debug.Log($"{name} Dead");
             ChangeState(new MonsterDeadState(this));
         }
+    }
+
+    public void Death()
+    {
+        Destroy(transform.gameObject, 5f);
     }
 
     public void ChangeState(IState state)

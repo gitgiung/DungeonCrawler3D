@@ -4,9 +4,6 @@ public class PlayerAttackState : IState
 {
     private PlayerController player;
 
-    private float attackTimer;
-    private float attackDuration = 1f;
-
     public PlayerAttackState(PlayerController player)
     {
         this.player = player;
@@ -15,7 +12,8 @@ public class PlayerAttackState : IState
     public void Enter()
     {
         Debug.Log("Attack Enter");
-        attackTimer = attackDuration;
+
+        player.View.PlayAttack();
 
         player.Combat.Attack();
     }
@@ -27,8 +25,7 @@ public class PlayerAttackState : IState
 
     public void Tick()
     {
-        attackTimer -= Time.deltaTime;
-        if (attackTimer <= 0)
+        if (player.View.IsAnimationFinished())
         {
             player.ChangeState(player.IdleState);
         }

@@ -3,14 +3,17 @@ using System.Collections;
 
 public class PlayerDash : MonoBehaviour
 {
+    private PlayerData data;
+
     public bool IsDashing { get; private set; }
     private PlayerMovement movement;
 
     private PlayerModel model;
 
-    public void Initialize(PlayerModel model)
+    public void Initialize(PlayerModel model, PlayerData data)
     {
         this.model = model;
+        this.data = data;
     }
 
     private void Awake()
@@ -30,10 +33,10 @@ public class PlayerDash : MonoBehaviour
 
         float timer = 0f;
 
-        while (timer < model.DashDuration)
+        while (timer < data.DashDuration)
         {
             transform.position +=
-                model.DashSpeed * Time.deltaTime * dashDir;
+                data.DashSpeed * Time.deltaTime * dashDir;
 
             timer += Time.deltaTime;
 

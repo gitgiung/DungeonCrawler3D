@@ -62,5 +62,16 @@ public class PlayerInteraction : MonoBehaviour
         }
 
         UI_F.gameObject.SetActive(foundInteractable);
+        UpdatePosition();
+    }
+
+    private void UpdatePosition()
+    {
+        Vector3 pos =
+            Camera.main.WorldToScreenPoint(
+                transform.position);
+        pos.y += 35f;
+
+        UI_F.transform.position = pos;
     }
 }

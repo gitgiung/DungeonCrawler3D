@@ -11,14 +11,15 @@ public class MonsterPatrolState : IState
     public void Enter()
     {
         Debug.Log("몬스터 복귀 시작");
-        monster.SetMoveSpeed(2f);
+        monster.SetMoveSpeed(1); // 이동속도 두 배 증가
+        monster.View.PlayPatrol();
         monster.LookAtMove(monster.startPos);
     }
 
     public void Exit()
     {
         Debug.Log("몬스터 복귀 중단");
-        monster.SetMoveSpeed(1f);
+        monster.SetMoveSpeed(0);
     }
 
     public void Tick()
@@ -33,10 +34,11 @@ public class MonsterPatrolState : IState
             return;
         }
 
+        // 경로 계산이 끝났고, 목적지까지 남은 거리가 내가 정한 정지 거리보다 작은지 체크
         if (!monster.Agent.pathPending &&
            monster.Agent.remainingDistance <= monster.Agent.stoppingDistance)
         {
-            monster.Agent.ResetPath();
+            monster.Agent.ResetPath(); //가지고있는 이동경로 제거
 
             monster.ChangeState(new MonsterIdleState(monster));
         }

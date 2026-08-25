@@ -2,36 +2,33 @@ using UnityEngine;
 
 public class PlayerCombat : MonoBehaviour
 {
-    [Header("Gizmos")]
-    [SerializeField] private Color gizmosColor = Color.red;
+    private PlayerData data;
 
-    private PlayerModel model;
-
-    public void Initialize(PlayerModel model)
+    public void Initialize(PlayerData data)
     {
-        this.model = model;
+        this.data = data;
     }
 
     public void Attack()
     {
         Vector3 pos = transform.position;
 
-        pos += transform.forward * model.AttackRange;
-        pos.y += model.AttackHeight;
+        pos += transform.forward * data.AttackRange;
+        pos.y += data.AttackHeight;
 
         Collider[] colliders =
             Physics.OverlapSphere(
                 pos,
-                model.AttackRadius,
-                model.TargetLayer
+                data.AttackRadius,
+                data.TargetLayer
             );
 
         foreach (Collider collider in colliders)
         {
             if (collider.TryGetComponent<IDamageable>(out IDamageable target))
             {
-                target.TakeDamage(model.AttackDamage);
-                DamageFontManager.Instance.CreateText(model.AttackDamage, collider.transform.position);
+                target.TakeDamage(data.AttackDamage);
+                DamageFontManager.Instance.CreateText(data.AttackDamage, collider.transform.position);
                 break;
             }
         }
@@ -39,19 +36,19 @@ public class PlayerCombat : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        if (model == null)
+        if(data == null)
             return;
 
-        Gizmos.color = gizmosColor;
+        Gizmos.color = Color.red;
 
         Vector3 pos = transform.position;
 
-        pos += transform.forward * model.AttackRange;
-        pos.y += model.AttackHeight;
+        pos += transform.forward * data.AttackRange;
+        pos.y += data.AttackHeight;
 
         Gizmos.DrawWireSphere(
             pos,
-            model.AttackRadius
+            data.AttackRadius
         );
     }
 }

@@ -12,6 +12,7 @@ public class PlayerMoveState : IState
 
     public void Enter()
     {
+        player.View.PlayMove();
         player.Movement.SetCanMove(true);
     }
 
@@ -34,9 +35,6 @@ public class PlayerMoveState : IState
 
         //Movement에 방향 전달
         player.Movement.SetMovement(direction);
-
-        
-        player.Movement.SetSprint(player.SprintInput);
 
         if (player.JumpInput && player.Jump.IsGround)
         {

@@ -1,30 +1,8 @@
 using UnityEngine;
 
-public class PlayerModel : MonoBehaviour
+public class PlayerModel : MonoBehaviour, IDamageable
 {
-    [Header("Player Speed")]
-    [SerializeField] private float walkSpeed = 5f;
-    public float WalkSpeed
-    {
-        get { return walkSpeed; }
-        set { walkSpeed = value; }
-    }
-
-    [SerializeField] private float sprintSpeed = 10f;
-    public float SprintSpeed
-    {
-        get { return sprintSpeed; }
-        set { sprintSpeed = value; }
-    }
-
     [Header("Player Jump")]
-    [SerializeField] private float jumpForce = 5f;
-    public float JumpForce
-    {
-        get { return jumpForce; }
-        set { jumpForce = value; }
-    }
-
     [SerializeField] private Transform groundCheck;
     public Transform GroundCheck
     {
@@ -45,19 +23,6 @@ public class PlayerModel : MonoBehaviour
     }
 
     [Header("Player Dash")]
-    [SerializeField] private float dashSpeed = 15f;
-    public float DashSpeed
-    {
-        get { return dashSpeed; }
-        set { dashSpeed = value; }
-    }
-
-    [SerializeField] private float dashDuration = 0.2f;
-    public float DashDuration
-    {
-        get { return dashDuration; }
-        set { dashDuration = value; }
-    }
     [SerializeField] private GameObject dashShadow;
     public GameObject DashShadow
     {
@@ -65,44 +30,24 @@ public class PlayerModel : MonoBehaviour
     }
 
     [Header("Player HP")]
-    [SerializeField] private int maxHP = 100;
-    public int MaxHP
+    [SerializeField] private int currentHP;
+    public int CurrentHP
     {
-        get { return maxHP; }
-        set { maxHP = value; }
+        get { return currentHP; }
+        set { currentHP = value; }
     }
 
-    [Header("Player Attack")]
-    [SerializeField] private int attackDamage = 10;
-    public int AttackDamage
-    {
-        get { return attackDamage; }
-        set { attackDamage = value; }
-    }
+    public bool IsDead { get; private set; }
 
-    [SerializeField] private LayerMask targetLayer;
-    public LayerMask TargetLayer
+    public void TakeDamage(int damage)
     {
-        get { return targetLayer; }
-    }
-    [SerializeField, Range(0f, 3f)] private float attackHeight;
-    public float AttackHeight
-    {
-        get { return attackHeight; }
-        set { attackHeight = value; }
-    }
+        CurrentHP -= damage;
+        CurrentHP = Mathf.Max(CurrentHP, 0);
+        Debug.Log($"플레이어가 입은 피해: {damage}, 플레이어 체력: {CurrentHP}");
 
-    [SerializeField, Range(0f, 3f)] private float attackRange;
-    public float AttackRange
-    {
-        get { return attackRange; }
-        set { attackRange = value; }
-    }
-
-    [SerializeField, Range(1f, 5f)] private float attackRadius;
-    public float AttackRadius
-    {
-        get { return attackRadius; }
-        set { attackRadius = value; }
+        if(CurrentHP <= 0)
+        {
+            IsDead = true;
+        }
     }
 }

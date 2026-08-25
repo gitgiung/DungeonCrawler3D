@@ -5,12 +5,14 @@ public class PlayerController : MonoBehaviour
 {
     private IState currentState;
 
+    [SerializeField] private PlayerData data;
+    public PlayerData Data {  get { return data; } }
     public PlayerModel Model { get; private set; }
+    public PlayerView View { get; private set; }
     public PlayerMovement Movement { get; private set; }
     public PlayerJump Jump { get; private set; }
     public PlayerDash Dash { get; private set; }
     public PlayerCombat Combat { get; private set; }
-    public PlayerCondition Condition { get; private set; }
     public PlayerInteraction Interaction { get; private set; }
 
     public PlayerIdleState IdleState { get; private set; }
@@ -20,7 +22,6 @@ public class PlayerController : MonoBehaviour
     public PlayerDeadState DeadState { get; private set; }
     public PlayerAttackState AttackState { get; private set; }
     public PlayerHitState HitState { get; private set; }
-
 
     // Input
     public Vector2 MoveInput { get; private set; }
@@ -34,11 +35,11 @@ public class PlayerController : MonoBehaviour
     private void Awake()
     {
         Model = GetComponent<PlayerModel>();
+        View = GetComponent<PlayerView>();
         Movement = GetComponent<PlayerMovement>();
         Jump = GetComponent<PlayerJump>();
         Dash = GetComponent<PlayerDash>();
         Combat = GetComponent<PlayerCombat>();
-        Condition = GetComponent<PlayerCondition>();
         Interaction = GetComponent<PlayerInteraction>();
 
         IdleState = new PlayerIdleState(this);
@@ -49,11 +50,12 @@ public class PlayerController : MonoBehaviour
         AttackState = new PlayerAttackState(this);
         HitState = new PlayerHitState(this);
 
-        Movement.Initialize(Model);
-        Jump.Initialize(Model);
-        Dash.Initialize(Model);
-        Combat.Initialize(Model);
-        Condition.Initialize(Model);
+        View.Initialize(Model, Data);
+        Movement.Initialize(Data);
+        Jump.Initialize(Model, Data);
+        Dash.Initialize(Model, Data);
+        Combat.Initialize(Data);
+
     }
 
     private void Start()
@@ -69,6 +71,8 @@ public class PlayerController : MonoBehaviour
         Movement.Look();
 
         currentState?.Tick();
+
+        Movement.SetSprint(SprintInput);
 
         //한 프레임짜리 입력 초기화
         JumpInput = false;

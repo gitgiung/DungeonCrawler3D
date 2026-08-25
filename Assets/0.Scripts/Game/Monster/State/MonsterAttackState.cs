@@ -8,14 +8,11 @@ public class MonsterAttackState : IState
         this.monster = monster;
     }
 
-    private float attackTimer = 0f;
+    private float attackTimer = 0.5f;
 
     public void Enter()
     {
         Debug.Log("몬스터의 공격 시작");
-        monster.Attack();
-
-        attackTimer = monster.AttackDelay;
     }
 
     public void Exit()
@@ -30,17 +27,21 @@ public class MonsterAttackState : IState
         monster.Target.position
         );
 
-        attackTimer -= Time.deltaTime;
-        if (attackTimer <= 0f)
-        {
-            attackTimer = monster.AttackDelay;
-            monster.Attack();
-        }
-
         if (distance > 2f)
         {
             monster.ChangeState(new MonsterChaseState(monster));
             return;
         }
+
+        attackTimer -= Time.deltaTime;
+        if (attackTimer <= 0f)
+        {
+            attackTimer = monster.AttackDelay;
+
+            monster.View.PlayAttack();
+            monster.Attack();
+        }
+
+        
     }
 }
