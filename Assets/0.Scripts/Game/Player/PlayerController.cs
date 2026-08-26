@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour, IDamageable
 {
     private IState currentState;
 
@@ -50,10 +50,10 @@ public class PlayerController : MonoBehaviour
         AttackState = new PlayerAttackState(this);
         HitState = new PlayerHitState(this);
 
-        View.Initialize(Model, Data);
+        View.Initialize(Model,Data);
         Movement.Initialize(Data);
-        Jump.Initialize(Model, Data);
-        Dash.Initialize(Model, Data);
+        Jump.Initialize(Model,Data);
+        Dash.Initialize(Model,Data);
         Combat.Initialize(Data);
 
     }
@@ -106,6 +106,19 @@ public class PlayerController : MonoBehaviour
     public void OnSprint(InputValue value)
     {
         SprintInput = value.isPressed;
+    }
+
+    public void TakeDamage(int damage)
+    {
+        Model.ReduceHP(damage);
+        View.UpdateHP();
+
+        Debug.Log($"플레이어가 입은 피해: {damage}, 플레이어 체력: {Model.CurrentHP}");
+        if (Model.IsDead)
+        {
+            Debug.Log($"{name} 사망");
+            //ChangeState(DeadState);
+        }
     }
 
     public void ChangeState(IState newState)

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 071030dfa513d4a449bdaee6438a7599, type: 3}
   m_Name: PlayerData00
   m_EditorClassIdentifier: Assembly-CSharp::PlayerData
-  maxHP: 100
+  maxHP: 200
   walkSpeed: 4
   sprintSpeed: 14
   jumpForce: 5

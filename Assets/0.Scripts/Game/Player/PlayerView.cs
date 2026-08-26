@@ -6,8 +6,10 @@ public class PlayerView : MonoBehaviour
     private Animator animator;
 
     [Header("HP Bar")]
-    [SerializeField] private GameObject hpBG;
-    [SerializeField] private Image hpImg;
+    [SerializeField] private GameObject hpBar;
+    [SerializeField] private Transform uiCanvas;
+    private Image hpImg;
+    private GameObject hpBarInstance;
 
     private PlayerModel model;
     private PlayerData data;
@@ -15,6 +17,8 @@ public class PlayerView : MonoBehaviour
     {
         this.model = model;
         this.data = data;
+
+        CreateHPBar();
     }
 
     private void Awake()
@@ -25,11 +29,9 @@ public class PlayerView : MonoBehaviour
     private void Update()
     {
         UpdatePosition();
-        UpdateHP();
     }
 
     // ***UI***
-
     private void UpdatePosition()
     {
         Vector3 pos =
@@ -37,12 +39,23 @@ public class PlayerView : MonoBehaviour
                 transform.position
             );
 
-        pos.y -= 8f;
+        pos.y -= 10f;
 
-        hpBG.transform.position = pos;
+        hpBarInstance.transform.position = pos;
     }
 
-    private void UpdateHP()
+    private void CreateHPBar()
+    {
+        hpBarInstance = Instantiate(hpBar, uiCanvas);
+
+        hpImg = hpBarInstance.transform
+            .Find("CurrentHP")
+            .GetComponent<Image>();
+
+        UpdateHP();
+    }
+
+    public void UpdateHP()
     {
         hpImg.fillAmount =
             (float)model.CurrentHP /
@@ -50,7 +63,6 @@ public class PlayerView : MonoBehaviour
     }
 
     // ***Animation***
-    
     public void PlayIdle()
     {
         animator.Play("S&S_Idle");

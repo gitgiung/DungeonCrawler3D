@@ -24,13 +24,13 @@ public class MonsterIdleState : IState
         //몬스터 플레이어 감지
         Collider[] cols = Physics.OverlapSphere(
             monster.transform.position,
-            monster.DetectRange,
-            monster.TargetLayer);
+            monster.Data.DetectRange,
+            monster.Data.TargetLayer);
 
         if (cols.Length == 0)
             return;
 
-        monster.Target = cols[0].transform;
+        monster.Model.Target = cols[0].transform;
         monster.ChangeState(new MonsterChaseState(monster));
     }
 }

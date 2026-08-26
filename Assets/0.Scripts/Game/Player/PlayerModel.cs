@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PlayerModel : MonoBehaviour, IDamageable
+public class PlayerModel : MonoBehaviour
 {
     [Header("Player Jump")]
     [SerializeField] private Transform groundCheck;
@@ -34,16 +34,14 @@ public class PlayerModel : MonoBehaviour, IDamageable
     public int CurrentHP
     {
         get { return currentHP; }
-        set { currentHP = value; }
+        private set { currentHP = value; }
     }
 
     public bool IsDead { get; private set; }
 
-    public void TakeDamage(int damage)
+    public void ReduceHP(int damage)
     {
-        CurrentHP -= damage;
-        CurrentHP = Mathf.Max(CurrentHP, 0);
-        Debug.Log($"플레이어가 입은 피해: {damage}, 플레이어 체력: {CurrentHP}");
+        CurrentHP = Mathf.Max(CurrentHP - damage, 0);
 
         if(CurrentHP <= 0)
         {

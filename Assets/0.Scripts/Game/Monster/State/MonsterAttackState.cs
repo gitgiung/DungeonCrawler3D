@@ -22,12 +22,18 @@ public class MonsterAttackState : IState
 
     public void Tick()
     {
+        if (monster.Model.Target == null)
+        {
+            monster.ChangeState(new MonsterChaseState(monster));
+            return;
+        }
+
         float distance = Vector3.Distance(
         monster.transform.position,
-        monster.Target.position
+        monster.Model.Target.position
         );
 
-        if (distance > 2f)
+        if (distance > monster.Data.AttackRange)
         {
             monster.ChangeState(new MonsterChaseState(monster));
             return;
@@ -36,7 +42,7 @@ public class MonsterAttackState : IState
         attackTimer -= Time.deltaTime;
         if (attackTimer <= 0f)
         {
-            attackTimer = monster.AttackDelay;
+            attackTimer = monster.Data.AttackDelay;
 
             monster.View.PlayAttack();
             monster.Attack();

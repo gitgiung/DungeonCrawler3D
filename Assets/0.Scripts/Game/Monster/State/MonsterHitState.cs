@@ -9,7 +9,6 @@ public class MonsterHitState : IState
     }
 
     private float stunTimer = 0f;
-    private float stunTime = 2f;
 
     public void Enter()
     {
@@ -25,7 +24,7 @@ public class MonsterHitState : IState
     public void Tick()
     {
         stunTimer += Time.deltaTime;
-        if(stunTimer > stunTime)
+        if(stunTimer > monster.Data.StunTime)
         {
             monster.ChangeState(new MonsterIdleState(monster));
         }

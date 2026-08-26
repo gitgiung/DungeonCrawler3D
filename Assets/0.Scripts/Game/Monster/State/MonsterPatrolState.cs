@@ -11,25 +11,25 @@ public class MonsterPatrolState : IState
     public void Enter()
     {
         Debug.Log("몬스터 복귀 시작");
-        monster.SetMoveSpeed(1); // 이동속도 두 배 증가
+        monster.SetMoveSpeed(2f); // 이동속도 두 배 증가
         monster.View.PlayPatrol();
-        monster.LookAtMove(monster.startPos);
+        monster.MoveTo(monster.StartPos);
     }
 
     public void Exit()
     {
         Debug.Log("몬스터 복귀 중단");
-        monster.SetMoveSpeed(0);
+        monster.SetMoveSpeed(1f);
     }
 
     public void Tick()
     {
         Collider[] cols = Physics.OverlapSphere(
-            monster.transform.position, monster.DetectRange, monster.TargetLayer);
+            monster.transform.position, monster.Data.DetectRange, monster.Data.TargetLayer);
 
         if (cols.Length > 0)
         {
-            monster.Target = cols[0].transform;
+            monster.Model.Target = cols[0].transform;
             monster.ChangeState(new MonsterChaseState(monster));
             return;
         }

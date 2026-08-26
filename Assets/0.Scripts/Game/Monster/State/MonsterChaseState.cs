@@ -21,7 +21,7 @@ public class MonsterChaseState : IState
 
     public void Tick()
     {
-        if (monster.Target == null)
+        if (monster.Model.Target == null)
         {
             monster.ChangeState(new MonsterIdleState(monster));
             return;
@@ -29,21 +29,21 @@ public class MonsterChaseState : IState
 
         float distance = Vector3.Distance(
         monster.transform.position,
-        monster.Target.position
+        monster.Model.Target.position
         );
 
-        if (distance > monster.LoseTargetRange)
+        if (distance > monster.Data.LoseTargetRange)
         {
             monster.ChangeState(new MonsterPatrolState(monster));
             return;
         }
 
-        if (distance < 2f)
+        if (distance < monster.Data.AttackRange)
         {
             monster.ChangeState(new MonsterAttackState(monster));
             return;
         }
 
-        monster.LookAtMove(monster.Target.position);
+        monster.MoveTo(monster.Model.Target.position);
     }
 }
