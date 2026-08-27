@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 808abaa05dc51a64c8d670b36dd9516b, type: 3}
+  m_Name: WhitePotion
+  m_EditorClassIdentifier: Assembly-CSharp::ItemScriptable
+  itemID: 1
+  itemType: 0
+  itemName: "\uD558\uC580 \uD3EC\uC158"
+  icon: {fileID: 1835094359, guid: bea2ca8df2b524a4898353ec9181ce6a, type: 3}
+  maxStack: 5
+  price: 120

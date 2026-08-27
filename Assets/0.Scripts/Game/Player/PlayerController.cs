@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour, IDamageable
@@ -97,8 +98,12 @@ public class PlayerController : MonoBehaviour, IDamageable
             DashInput = true;
     }
 
+    [SerializeField] private GameObject inventoryUI;
     public void OnAttack(InputValue value)
     {
+        if (inventoryUI.activeInHierarchy)
+            return;
+
         if (value.isPressed)
             AttackInput = true;
     }
