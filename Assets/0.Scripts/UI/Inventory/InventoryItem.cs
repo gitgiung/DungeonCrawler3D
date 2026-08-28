@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 // 아이템 사용 목적
@@ -9,7 +10,7 @@ using UnityEngine.UI;
 // 아이템 생성 목적
 //  1. 새로 생성
 //  2. 기존 아이템 개수 추가
-public class InventoryItem : MonoBehaviour
+public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler
 {
     [SerializeField] private Image iconImg;
     [SerializeField] private TMP_Text nameTxt;
@@ -83,5 +84,48 @@ public class InventoryItem : MonoBehaviour
     {
         Debug.Log($"장비 아이템 {data.ItemName} 장착");
         equipImg.gameObject.SetActive(true);
+    }
+
+    private bool isDragging;
+
+    public void OnBeginDrag(PointerEventData eventData)
+    {
+        // 장비 아이템만 장비창으로 드래그할 수 있게 할 경우
+        if (data.ItemType != ItemType.Equipment)
+            return;
+
+        isDragging = true;
+
+        UIController.Instance.moveItem.Show(
+            data,
+            eventData.position
+        );
+    }
+
+    public void OnDrag(PointerEventData eventData)
+    {
+        if (!isDragging)
+            return;
+
+        UIController.Instance.moveItem.Move(eventData.position);
+    }
+
+    public void OnEndDrag(PointerEventData eventData)
+    {
+        if (!isDragging)
+            return;
+
+        EquipmentSlot slot =
+            UIController.Instance.equipmentSystem.SelectSlot;
+
+        if (slot != null)
+        {
+            slot.Equip(data);
+            equipImg.gameObject.SetActive(true);
+        }
+
+        UIController.Instance.moveItem.Hide();
+
+        isDragging = false;
     }
 }

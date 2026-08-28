@@ -1,6 +1,6 @@
-using NUnit.Framework;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 // 아이템 관리
 // 아이템이 사용되었을 경우

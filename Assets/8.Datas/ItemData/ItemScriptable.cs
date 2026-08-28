@@ -26,4 +26,13 @@ public class ItemScriptable : ScriptableObject
 
     [SerializeField] private int price;
     public int Price => price;
+
+    [SerializeField] private int damage;
+    public int Damage => damage;
+
+    [SerializeField] private int defence;
+    public int Defence => defence;
+
+    [SerializeField] private int speed;
+    public int Speed => speed;
 }
