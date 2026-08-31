@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bec9a0a72dd5edc44aab843c2bfe8c3b, type: 3}
+  m_Name: BossData00
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyData
+  monsterID: 1
+  monsterType: 1
+  targetLayer:
+    serializedVersion: 2
+    m_Bits: 256
+  detectRange: 10
+  loseTargetRange: 15
+  attackDamage: 40
+  attackDelay: 3
+  attackRange: 8
+  stunTime: 0
+  maxHP: 500
+  moveSpeed: 3

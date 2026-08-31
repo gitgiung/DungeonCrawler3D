@@ -1,8 +1,21 @@
 using UnityEngine;
 
+public enum MonsterType
+{
+    Normal,
+    Boss
+}
+
 [CreateAssetMenu(fileName = "MonsterData", menuName = "MonsterData/Data")]
 public class EnemyData : ScriptableObject
 {
+    [Header("ID / Type")]
+    [SerializeField] private int monsterID;
+    public int MonsterID => monsterID;
+
+    [SerializeField] private MonsterType monsterType;
+    public MonsterType MonsterType => monsterType;
+
     [Header("Targeting Player")]
     [SerializeField] private LayerMask targetLayer;
     public LayerMask TargetLayer { get { return targetLayer; } }

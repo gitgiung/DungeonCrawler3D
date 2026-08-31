@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerData
   maxHP: 200
   walkSpeed: 4
-  sprintSpeed: 14
+  sprintSpeed: 8
   jumpForce: 5
   dashSpeed: 15
   dashDuration: 0.2

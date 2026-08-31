@@ -73,8 +73,6 @@ public class PlayerController : MonoBehaviour, IDamageable
 
         currentState?.Tick();
 
-        Movement.SetSprint(SprintInput);
-
         //한 프레임짜리 입력 초기화
         JumpInput = false;
         DashInput = false;
@@ -110,7 +108,8 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     public void OnSprint(InputValue value)
     {
-        SprintInput = value.isPressed;
+        SprintInput = value.Get<float>() > 0f;
+        Movement.SetSprint(SprintInput);
     }
 
     public void TakeDamage(int damage)
