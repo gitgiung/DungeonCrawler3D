@@ -36,13 +36,12 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
         iconImg.sprite = data.Icon;
         nameTxt.text = data.ItemName;
         equipImg.gameObject.SetActive(false);
-        SetCount(1);
 
         if (data.ItemType == ItemType.Equipment)
             countTxt.gameObject.SetActive(false);
     }
 
-    public void SetCount(int cnt)
+    public void AddCount(int cnt)
     {
         count += cnt;
         countTxt.text = $"{count}";
@@ -72,7 +71,7 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
     private void UseConsumable()
     {
         Debug.Log($"소비 아이템 {data.ItemName} 사용");
-        SetCount(-1);
+        AddCount(-1);
 
         if (count <= 0)
         {

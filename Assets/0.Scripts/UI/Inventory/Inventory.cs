@@ -24,25 +24,50 @@ public class Inventory : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.F5))
         {
             int rand = Random.Range(0, itemDatas.Length);
-            CreateItem(itemDatas[rand]);
+            CreateItem(itemDatas[rand], 7);
         }
     }
 
-    public void CreateItem(ItemScriptable data)
+    public int CreateItem(ItemScriptable data, int amount)
     {
-        foreach (var i in items)
+        // 1. 기존 스택 중 여유가 있는 곳부터 채우기
+        foreach (var item in items)
         {
-            if (i.Data.ItemID == data.ItemID &&
-                i.Count < data.MaxStack)
-            {
-                i.SetCount(1);
-                return;
-            }
+            if (item.Data.ItemID != data.ItemID)
+                continue;
+
+            if (item.Count >= data.MaxStack)
+                continue;
+
+            int space = (int)data.MaxStack - item.Count;
+            int addAmount = Mathf.Min(space, amount);
+
+            item.AddCount(addAmount);
+            amount -= addAmount;
+
+            // 전부 넣었으면 종료
+            if (amount <= 0)
+                return 0;
         }
-        InventoryItem creatItem = Instantiate(invenItem, parent);
-        creatItem.Init(data, this);
-        creatItem.Setting();
-        items.Add(creatItem);
+
+        // 2. 그래도 수량이 남아있다면 새로운 스택 생성
+        while (amount > 0)
+        {
+            int stackAmount = Mathf.Min((int)data.MaxStack, amount);
+
+            InventoryItem createItem = Instantiate(invenItem, parent);
+            createItem.Init(data, this);
+            createItem.Setting();
+
+            // 기본 Count가 0이라면 그대로 사용
+            createItem.AddCount(stackAmount);
+
+            items.Add(createItem);
+
+            amount -= stackAmount;
+        }
+
+        return 0;
     }
 
     // 아이템을 다 소모하거나 삭제 버튼 클릭 시

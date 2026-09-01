@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class PlayerModel : MonoBehaviour
 {
+    public event System.Action OnChanged;
+
     [Header("Player Jump")]
     [SerializeField] private Transform groundCheck;
     public Transform GroundCheck
@@ -29,7 +31,7 @@ public class PlayerModel : MonoBehaviour
         get { return dashShadow; }
     }
 
-    [Header("Player HP")]
+    [Header("Player Info")]
     [SerializeField] private int currentHP;
     public int CurrentHP
     {
@@ -47,5 +49,29 @@ public class PlayerModel : MonoBehaviour
         {
             IsDead = true;
         }
+    }
+
+    public int Gold { get; private set; }
+    public int Exp { get; private set; }
+    public int Level { get; private set; }
+
+    public void AddGold(int amount)
+    {
+        if (amount < 0)
+            return;
+
+        Gold += amount;
+        Debug.Log($"°ñµå: {Gold}");
+        OnChanged?.Invoke();
+    }
+
+    public void AddExp(int amount)
+    {
+        if (amount < 0)
+            return;
+
+        Exp += amount;
+        Debug.Log($"°æÇèÄ¡: {Exp}");
+        OnChanged?.Invoke();
     }
 }

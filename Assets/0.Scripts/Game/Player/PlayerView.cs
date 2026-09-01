@@ -7,9 +7,11 @@ public class PlayerView : MonoBehaviour
 
     [Header("HP Bar")]
     [SerializeField] private GameObject hpBar;
-    [SerializeField] private Transform uiCanvas;
     private Image hpImg;
-    private GameObject hpBarInstance;
+
+    [Header("EXP Bar")]
+    [SerializeField] private GameObject expBar;
+    private Image expImg;
 
     private PlayerModel model;
     private PlayerData data;
@@ -17,49 +19,29 @@ public class PlayerView : MonoBehaviour
     {
         this.model = model;
         this.data = data;
-
-        CreateHPBar();
     }
 
     private void Awake()
     {
         animator = GetComponent<Animator>();
-    }
-
-    private void Update()
-    {
-        UpdatePosition();
+        hpImg = hpBar.transform.Find("CurrentHP").GetComponent<Image>();
+        expImg = expBar.transform.Find("CurrentEXP").GetComponent <Image>();
     }
 
     // ***UI***
-    private void UpdatePosition()
-    {
-        Vector3 pos =
-            Camera.main.WorldToScreenPoint(
-                transform.position
-            );
-
-        pos.y -= 10f;
-
-        hpBarInstance.transform.position = pos;
-    }
-
-    private void CreateHPBar()
-    {
-        hpBarInstance = Instantiate(hpBar, uiCanvas);
-
-        hpImg = hpBarInstance.transform
-            .Find("CurrentHP")
-            .GetComponent<Image>();
-
-        UpdateHP();
-    }
 
     public void UpdateHP()
     {
         hpImg.fillAmount =
             (float)model.CurrentHP /
             data.MaxHP;
+    }
+
+    public void UpdateEXP()
+    {
+        expImg.fillAmount =
+            (float)model.Exp /
+            100;
     }
 
     // ***Animation***
