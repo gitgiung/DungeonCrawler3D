@@ -7,29 +7,31 @@ public class QuestUI : MonoBehaviour
     [SerializeField] private TMP_Text titleText;
     [SerializeField] private TMP_Text progressText;
 
-    private void Start()
+    private void OnEnable()
     {
-        questManager.OnQuestChanged += ReFresh;
-        ReFresh();
+        if (questManager == null)
+            return;
+
+        questManager.OnQuestChanged += Refresh;
+        Refresh();
     }
 
-    private void OnDestroy()
+    private void OnDisable()
     {
         if (questManager != null)
-            questManager.OnQuestChanged -= ReFresh;
+            questManager.OnQuestChanged -= Refresh;
     }
 
-    private void ReFresh()
+    private void Refresh()
     {
-        if (questManager.ActiveQuests.Count == 0)
-        {
-            titleText.text = string.Empty;
-            progressText.text = string.Empty;
+        QuestProgress quest = FindUnfinishedQuest();
 
+        if (quest == null)
+        {
+            Clear();
             return;
         }
 
-        QuestProgress quest = questManager.ActiveQuests[0];
         titleText.text = quest.Data.questTitle;
 
         switch (quest.State)
@@ -39,7 +41,7 @@ public class QuestUI : MonoBehaviour
                 break;
 
             case QuestState.CanComplete:
-                progressText.text = $"{quest.Data.questTitle} 완료. 보상을 받으세요";
+                progressText.text = $"{quest.Data.questTitle} 완료";
                 break;
 
             case QuestState.Completed:
@@ -47,5 +49,24 @@ public class QuestUI : MonoBehaviour
                 break;
 
         }
+    }
+
+    private QuestProgress FindUnfinishedQuest()
+    {
+        foreach (QuestProgress quest
+                 in questManager.ActiveQuests)
+        {
+            if (quest.State != QuestState.Completed)
+                return quest;
+        }
+
+        return null;
+    }
+
+
+    private void Clear()
+    {
+        titleText.text = string.Empty;
+        progressText.text = string.Empty;
     }
 }

@@ -9,6 +9,11 @@ public class Door : MonoBehaviour, IInteractable
         animator = GetComponent<Animator>();
     }
 
+    public string GetInteractionText()
+    {
+        return "¹® ¿­±â";
+    }
+
     public void Interact()
     {
         animator.SetTrigger("door_open");

@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -5,6 +6,7 @@ public class PlayerInteraction : MonoBehaviour
 {
     [Header("Interact UI")]
     [SerializeField] private Image UI_F;
+    [SerializeField] private TMP_Text interactionText;
 
     [SerializeField, Range(1f, 5f)]
     private float interactRadius = 1f;
@@ -13,56 +15,78 @@ public class PlayerInteraction : MonoBehaviour
     [SerializeField] Color gizmosColor = Color.yellow;
     [SerializeField] private float posY = 1f;
 
-    private Vector3 pos;
+    private Vector3 checkPosition;
 
     private void Update()
     {
         if (GameManager.Instance.State != GameState.Playing)
+        {
+            HideInteractionUI();
             return;
+        }
 
         CheckInteractable();
     }
 
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = gizmosColor;
-        pos = transform.position;
-        pos.y += posY;
-        Gizmos.DrawWireSphere(pos,
-                interactRadius);
-    }
-
     private void CheckInteractable()
     {
-        pos = transform.position;
-        pos.y += posY;
+        checkPosition = transform.position;
+        checkPosition.y += posY;
 
-        Collider[] colliders =
-            Physics.OverlapSphere(
-                pos,
-                interactRadius
-            );
+        Collider[] colliders = Physics.OverlapSphere(
+            checkPosition,
+            interactRadius
+        );
 
-        bool foundInteractable = false;
+        IInteractable nearestInteractable = null;
+        float nearestDistance = float.MaxValue;
 
         foreach (Collider collider in colliders)
         {
-            if (collider.TryGetComponent<IInteractable>(
-                out IInteractable interact))
-            {
-                foundInteractable = true;
+            IInteractable interactable =
+                collider.GetComponentInParent<IInteractable>();
 
-                if (Input.GetKeyDown(KeyCode.F))
-                {
-                    interact.Interact();
-                }
+            if (interactable == null)
+                continue;
 
-                break;
-            }
+            Vector3 closestPoint = collider.ClosestPoint(checkPosition);
+            float distance =
+                (closestPoint - checkPosition).sqrMagnitude;
+
+            if (distance >= nearestDistance)
+                continue;
+
+            nearestDistance = distance;
+            nearestInteractable = interactable;
         }
 
-        UI_F.gameObject.SetActive(foundInteractable);
+        if (nearestInteractable == null)
+        {
+            HideInteractionUI();
+            return;
+        }
+
+        ShowInteractionUI(nearestInteractable.GetInteractionText());
+
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            // 대화창 뒤에 F 안내가 남지 않게 먼저 숨긴다.
+            HideInteractionUI();
+            nearestInteractable.Interact();
+        }
+    }
+
+    private void ShowInteractionUI(string message)
+    {
+        UI_F.gameObject.SetActive(true);
+        interactionText.text = message;
         UpdatePosition();
+    }
+
+    private void HideInteractionUI()
+    {
+        UI_F.gameObject.SetActive(false);
+        interactionText.text = string.Empty;
     }
 
     private void UpdatePosition()
@@ -73,5 +97,14 @@ public class PlayerInteraction : MonoBehaviour
         pos.y += 35f;
 
         UI_F.transform.position = pos;
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = gizmosColor;
+        checkPosition = transform.position;
+        checkPosition.y += posY;
+        Gizmos.DrawWireSphere(checkPosition,
+                interactRadius);
     }
 }

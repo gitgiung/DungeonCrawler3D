@@ -54,15 +54,24 @@ public class Monster : MonoBehaviour, IDamageable
             }
         }
     }
+
+    private bool isDead;
     public void TakeDamage(int damage)
     {
+        if (isDead)
+            return;
+
         Model.ReduceHP(damage);
         View.UpdateHP();
         Debug.Log($"{name}이(가) 입은 피해: {damage}, {name} 남은 체력: {Model.CurrentHP}");
 
         if (Model.IsDead)
         {
+            isDead = true;
             Debug.Log($"{name} Dead");
+
+            GameEvents.RaiseEnemyDead(Data.MonsterID);
+
             ChangeState(new MonsterDeadState(this));
             return;
         }

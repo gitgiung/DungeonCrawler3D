@@ -67,13 +67,21 @@ public class PlayerController : MonoBehaviour, IDamageable
     private void Update()
     {
         if (GameManager.Instance.State != GameState.Playing)
+        {
+            ResetInputs();
             return;
+        }
 
         Movement.Look();
 
         currentState?.Tick();
 
         //한 프레임짜리 입력 초기화
+        ResetInputs();
+    }
+
+    private void ResetInputs()
+    {
         JumpInput = false;
         DashInput = false;
         AttackInput = false;

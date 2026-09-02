@@ -14,7 +14,17 @@ public class QuestManager : MonoBehaviour
         playerModel = UnityEngine.Object.FindAnyObjectByType<PlayerModel>();
     }
 
-    public bool AccpetQuest(QuestData quest)
+    private void OnEnable()
+    {
+        GameEvents.EnemyDeadEvent += NotifyEnemyKilled;
+    }
+
+    private void OnDisable()
+    {
+        GameEvents.EnemyDeadEvent -= NotifyEnemyKilled;
+    }
+
+    public bool AcceptQuest(QuestData quest)
     {
         if (quest == null)
             return false;

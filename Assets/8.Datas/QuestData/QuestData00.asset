@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::QuestData
   questID: 0
   questTitle: "\uB9C8\uC744\uC758 \uC704\uD611"
-  questDescription: "\uBAAC\uC2A4\uD130 5\uB9C8\uB9AC\uB97C \uCC98\uCE58\uD558\uC138\uC694."
+  questDescription: "\uBAAC\uC2A4\uD130 1\uB9C8\uB9AC\uB97C \uCC98\uCE58\uD558\uC138\uC694."
   questType: 0
   targetID: 0
-  requiredCount: 5
+  requiredCount: 1
   rewardGold: 100
   rewardExp: 20
   rewardItem: {fileID: 11400000, guid: 42e85ed9a1deded45a7e34f00719cbe9, type: 2}
