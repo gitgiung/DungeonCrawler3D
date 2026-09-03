@@ -4,26 +4,6 @@ public class PlayerModel : MonoBehaviour
 {
     public event System.Action OnChanged;
 
-    [Header("Player Jump")]
-    [SerializeField] private Transform groundCheck;
-    public Transform GroundCheck
-    {
-        get { return groundCheck; }
-    }
-
-    [SerializeField] private float groundCheckRadius = 0.1f;
-    public float GroundCheckRadius
-    {
-        get { return groundCheckRadius; }
-        set { groundCheckRadius = value; }
-    }
-
-    [SerializeField] private LayerMask groundLayer;
-    public LayerMask GroundLayer
-    {
-        get { return groundLayer; }
-    }
-
     [Header("Player Dash")]
     [SerializeField] private GameObject dashShadow;
     public GameObject DashShadow
@@ -61,7 +41,7 @@ public class PlayerModel : MonoBehaviour
             return;
 
         Gold += amount;
-        Debug.Log($"°ñµå: {Gold}");
+        Debug.Log($"ê³¨ë“œ: {Gold}");
         OnChanged?.Invoke();
     }
 
@@ -71,7 +51,7 @@ public class PlayerModel : MonoBehaviour
             return;
 
         Exp += amount;
-        Debug.Log($"°æÇèÄ¡: {Exp}");
+        Debug.Log($"ê²½í—˜ì¹˜: {Exp}");
         OnChanged?.Invoke();
     }
 }

@@ -15,7 +15,9 @@ MonoBehaviour:
   maxHP: 200
   walkSpeed: 4
   sprintSpeed: 8
-  jumpForce: 5
+  rotationSpeed: 720
+  jumpHeight: 1.3
+  gravity: -9.81
   dashSpeed: 15
   dashDuration: 0.2
   attackDamage: 10

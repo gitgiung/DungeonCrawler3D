@@ -11,33 +11,45 @@ public class PlayerData : ScriptableObject
     }
 
     [Header("Player Speed")]
-    [SerializeField] private float walkSpeed;
+    [SerializeField, Min(0f)] private float walkSpeed;
     public float WalkSpeed
     {
         get { return walkSpeed; }
     }
 
-    [SerializeField] private float sprintSpeed;
+    [SerializeField, Min(0f)] private float sprintSpeed;
     public float SprintSpeed
     {
         get { return sprintSpeed; }
     }
 
-    [Header("Player Jump")]
-    [SerializeField] private float jumpForce;
-    public float JumpForce
+    [SerializeField, Min(0f)] private float rotationSpeed = 720f;
+    public float RotationSpeed
     {
-        get { return jumpForce; }
+        get { return rotationSpeed; }
+    }
+
+    [Header("Player Jump")]
+    [SerializeField, Min(0f)] private float jumpHeight = 1.3f;
+    public float JumpHeight
+    {
+        get { return jumpHeight; }
+    }
+
+    [SerializeField, Range(-50f, -0.1f)] private float gravity = -9.81f;
+    public float Gravity
+    {
+        get { return gravity; }
     }
 
     [Header("Player Dash")]
-    [SerializeField] private float dashSpeed;
+    [SerializeField, Min(0f)] private float dashSpeed;
     public float DashSpeed
     {
         get { return dashSpeed; }
     }
 
-    [SerializeField] private float dashDuration;
+    [SerializeField, Min(0f)] private float dashDuration;
     public float DashDuration
     {
         get { return dashDuration; }

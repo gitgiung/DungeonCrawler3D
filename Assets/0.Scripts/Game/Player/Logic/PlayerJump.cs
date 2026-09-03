@@ -2,39 +2,47 @@ using UnityEngine;
 
 public class PlayerJump : MonoBehaviour
 {
+    private const float GroundedVelocity = -2f;
+
     private PlayerData data;
 
     public bool IsGround { get; private set; }
+    public float VerticalVelocity { get; private set; }
 
-    private Rigidbody rb;
-
-    private PlayerModel model;
-
-    public void Initialize(PlayerModel model, PlayerData data)
+    public void Initialize(PlayerData data)
     {
-        this.model = model;
         this.data = data;
     }
 
-    private void Awake()
+    public void BeginJump()
     {
-        rb = GetComponent<Rigidbody>();
+        VerticalVelocity = Mathf.Sqrt(data.JumpHeight * -2f * data.Gravity);
+        IsGround = false;
     }
 
-    private void FixedUpdate()
+    public void BeginFall()
     {
-        CheckGround();
-    }
-    private void CheckGround()
-    {
-        IsGround = Physics.CheckSphere(
-        model.GroundCheck.position,
-        model.GroundCheckRadius,
-        model.GroundLayer);
+        IsGround = false;
     }
 
-    public void Jump()
+    public void TickGravity(float deltaTime, bool controllerGrounded)
     {
-        rb.AddForce(Vector3.up * data.JumpForce, ForceMode.Impulse);
+        if (controllerGrounded && VerticalVelocity < 0f)
+        {
+            VerticalVelocity = GroundedVelocity;
+            return;
+        }
+
+        VerticalVelocity += data.Gravity * deltaTime;
+    }
+
+    public void SetGrounded(bool grounded)
+    {
+        IsGround = grounded;
+
+        if (!grounded || VerticalVelocity >= 0f)
+            return;
+
+        VerticalVelocity = GroundedVelocity;
     }
 }

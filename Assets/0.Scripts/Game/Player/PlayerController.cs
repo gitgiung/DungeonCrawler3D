@@ -1,13 +1,16 @@
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
+[RequireComponent(typeof(CharacterController))]
+[RequireComponent(typeof(PlayerMovement))]
+[RequireComponent(typeof(PlayerJump))]
+[RequireComponent(typeof(PlayerDash))]
 public class PlayerController : MonoBehaviour, IDamageable
 {
     private IState currentState;
 
     [SerializeField] private PlayerData data;
-    public PlayerData Data {  get { return data; } }
+    public PlayerData Data => data;
     public PlayerModel Model { get; private set; }
     public PlayerView View { get; private set; }
     public PlayerMovement Movement { get; private set; }
@@ -24,10 +27,8 @@ public class PlayerController : MonoBehaviour, IDamageable
     public PlayerAttackState AttackState { get; private set; }
     public PlayerHitState HitState { get; private set; }
 
-    // Input
     public Vector2 MoveInput { get; private set; }
-    public bool HasMoveInput =>
-        MoveInput.sqrMagnitude > 0.001f;
+    public bool HasMoveInput => MoveInput.sqrMagnitude > 0.001f;
     public bool JumpInput { get; private set; }
     public bool DashInput { get; private set; }
     public bool AttackInput { get; private set; }
@@ -35,6 +36,13 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     private void Awake()
     {
+        if (data == null)
+        {
+            Debug.LogError("PlayerData is not assigned.", this);
+            enabled = false;
+            return;
+        }
+
         Model = GetComponent<PlayerModel>();
         View = GetComponent<PlayerView>();
         Movement = GetComponent<PlayerMovement>();
@@ -51,12 +59,11 @@ public class PlayerController : MonoBehaviour, IDamageable
         AttackState = new PlayerAttackState(this);
         HitState = new PlayerHitState(this);
 
-        View.Initialize(Model,Data);
-        Movement.Initialize(Data);
-        Jump.Initialize(Model,Data);
-        Dash.Initialize(Model,Data);
-        Combat.Initialize(Data);
-
+        View.Initialize(Model, data);
+        Movement.Initialize(data);
+        Jump.Initialize(data);
+        Dash.Initialize(Model, data);
+        Combat.Initialize(data);
     }
 
     private void Start()
@@ -68,15 +75,21 @@ public class PlayerController : MonoBehaviour, IDamageable
     {
         if (GameManager.Instance.State != GameState.Playing)
         {
+            Movement.SetMovement(Vector3.zero);
             ResetInputs();
             return;
         }
 
-        Movement.Look();
+        Vector3 moveDirection = new Vector3(
+            MoveInput.x,
+            0f,
+            MoveInput.y
+        );
 
+        Movement.SetMovement(moveDirection);
         currentState?.Tick();
+        Movement.Tick();
 
-        //한 프레임짜리 입력 초기화
         ResetInputs();
     }
 
@@ -125,11 +138,11 @@ public class PlayerController : MonoBehaviour, IDamageable
         Model.ReduceHP(damage);
         View.UpdateHP();
 
-        Debug.Log($"플레이어가 입은 피해: {damage}, 플레이어 체력: {Model.CurrentHP}");
+        Debug.Log($"Player damage: {damage}, HP: {Model.CurrentHP}");
         if (Model.IsDead)
         {
-            Debug.Log($"{name} 사망");
-            //ChangeState(DeadState);
+            Debug.Log($"{name} died");
+            // ChangeState(DeadState);
         }
     }
 

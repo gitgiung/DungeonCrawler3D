@@ -21,19 +21,13 @@ public class PlayerIdleState : IState
 
     public void Tick()
     {
-        if (player.HasMoveInput)
-        {
-            player.ChangeState(player.MoveState);
-            return;
-        }
-
         if (player.JumpInput && player.Jump.IsGround)
         {
             player.ChangeState(player.JumpState);
             return;
         }
 
-        if (player.DashInput)
+        if (player.DashInput && player.Jump.IsGround)
         {
             player.ChangeState(player.DashState);
             return;
@@ -44,5 +38,8 @@ public class PlayerIdleState : IState
             player.ChangeState(player.AttackState);
             return;
         }
+
+        if (player.HasMoveInput)
+            player.ChangeState(player.MoveState);
     }
 }

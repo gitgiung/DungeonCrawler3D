@@ -1,14 +1,20 @@
 using UnityEngine;
-using System.Collections;
 
 public class PlayerDash : MonoBehaviour
 {
+    private const float ShadowInterval = 0.02f;
+    private const float ShadowLifetime = 0.2f;
+
     private PlayerData data;
+    private PlayerModel model;
+    private Vector3 dashDirection;
+    private float remainingTime;
+    private float shadowTimer;
 
     public bool IsDashing { get; private set; }
-    private PlayerMovement movement;
-
-    private PlayerModel model;
+    public Vector3 Velocity => IsDashing
+        ? dashDirection * data.DashSpeed
+        : Vector3.zero;
 
     public void Initialize(PlayerModel model, PlayerData data)
     {
@@ -16,41 +22,59 @@ public class PlayerDash : MonoBehaviour
         this.data = data;
     }
 
-    private void Awake()
+    public void StartDash(Vector3 direction)
     {
-        movement = GetComponent<PlayerMovement>();
-    }
-
-    public void StartDash()
-    {
-        StartCoroutine(Dash());
-    }
-
-    private IEnumerator Dash()
-    {
-        IsDashing = true;
-        Vector3 dashDir = movement.LastMoveDirection;
-
-        float timer = 0f;
-
-        while (timer < data.DashDuration)
+        if (data.DashDuration <= 0f)
         {
-            transform.position +=
-                data.DashSpeed * Time.deltaTime * dashDir;
-
-            timer += Time.deltaTime;
-
-            GameObject obj = Instantiate(
-                model.DashShadow,
-                transform.position,
-                transform.rotation
-            );
-
-            yield return new WaitForFixedUpdate();
-
-            Destroy(obj, 0.2f);
+            StopDash();
+            return;
         }
 
+        dashDirection = direction.sqrMagnitude > 0.001f
+            ? direction.normalized
+            : Vector3.right;
+
+        remainingTime = data.DashDuration;
+        shadowTimer = ShadowInterval;
+        IsDashing = true;
+        CreateShadow();
+    }
+
+    public void Tick(float deltaTime)
+    {
+        if (!IsDashing)
+            return;
+
+        remainingTime -= deltaTime;
+        shadowTimer -= deltaTime;
+
+        if (shadowTimer <= 0f)
+        {
+            CreateShadow();
+            shadowTimer += ShadowInterval;
+        }
+
+        if (remainingTime <= 0f)
+            StopDash();
+    }
+
+    public void StopDash()
+    {
         IsDashing = false;
+        remainingTime = 0f;
+    }
+
+    private void CreateShadow()
+    {
+        if (model.DashShadow == null)
+            return;
+
+        GameObject shadow = Instantiate(
+            model.DashShadow,
+            transform.position,
+            transform.rotation
+        );
+
+        Destroy(shadow, ShadowLifetime);
     }
 }

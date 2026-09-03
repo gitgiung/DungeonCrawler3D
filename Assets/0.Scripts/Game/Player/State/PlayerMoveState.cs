@@ -18,30 +18,17 @@ public class PlayerMoveState : IState
     public void Exit()
     {
         player.Movement.SetCanMove(false);
-        player.Movement.Stop();
     }
 
     public void Tick()
     {
-        if (!player.HasMoveInput)
-        {
-            player.ChangeState(player.IdleState);
-            return;
-        }
-
-        //이동 방향 생성
-        Vector3 direction = new Vector3(player.MoveInput.x, 0f, player.MoveInput.y);
-
-        //Movement에 방향 전달
-        player.Movement.SetMovement(direction);
-
         if (player.JumpInput && player.Jump.IsGround)
         {
             player.ChangeState(player.JumpState);
             return;
         }
 
-        if (player.DashInput)
+        if (player.DashInput && player.Jump.IsGround)
         {
             player.ChangeState(player.DashState);
             return;
@@ -52,5 +39,8 @@ public class PlayerMoveState : IState
             player.ChangeState(player.AttackState);
             return;
         }
+
+        if (!player.HasMoveInput)
+            player.ChangeState(player.IdleState);
     }
 }
