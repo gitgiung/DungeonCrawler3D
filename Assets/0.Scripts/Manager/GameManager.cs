@@ -9,11 +9,15 @@ public enum GameState
 
 public class GameManager : Singleton<GameManager>
 {
-    public int Score { get; set; }
     public GameState State { get; set; }
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
+
+        if (Instance != this)
+            return;
+
         State = GameState.Playing;
 
         //Scene이 변경되도 사라지지 않는다

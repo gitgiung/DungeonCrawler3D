@@ -1,46 +1,39 @@
 using System.IO;
 using UnityEngine;
 
-public class GameSaveData
-{
-    // 저장 해야 할 데이터
-
-    // 임시 데이터
-    public string playerName;
-    public int level;
-    public int gold;
-    public int exp;
-}
-
 public class SaveManager : Singleton<SaveManager>
 {
-    public string savePath;
+    private string savePath;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
+
+        if (Instance != this)
+            return;
+
         DontDestroyOnLoad(gameObject);
-        savePath = Path.Combine(Application.persistentDataPath, "save.json");
+
+        savePath = Path.Combine(
+            Application.persistentDataPath,
+            "save.json"
+        );
     }
 
-    [ContextMenu("Save")]
-    public void Save()
+    public void Save(GameSaveData data)
     {
-        GameSaveData data = new();
-        data.playerName = "hero";
-
         if (data == null)
         {
-            Debug.Log("data is not found");
+            Debug.LogWarning("Save Data is null");
             return;
         }
 
-        string json = JsonUtility.ToJson(data);
+        string json = JsonUtility.ToJson(data, true);
         File.WriteAllText(savePath, json);
 
         Debug.Log($"Save Complete : {savePath}");
     }
 
-    [ContextMenu("Load")]
     public GameSaveData Load()
     {
         if (!File.Exists(savePath))
@@ -49,30 +42,23 @@ public class SaveManager : Singleton<SaveManager>
             return null;
         }
 
-        try
-        {
-            string json = File.ReadAllText(savePath);
-            GameSaveData data = JsonUtility.FromJson<GameSaveData>(json);
-            Debug.Log(data.playerName);
-            return data;
-        }
-        catch (System.Exception e)
-        {
-            Debug.Log(e.Message);
-            return null;
-        }
+        string json = File.ReadAllText(savePath);
 
+        GameSaveData data =
+            JsonUtility.FromJson<GameSaveData>(json);
+
+        Debug.Log($"Load Complete : {data.player.playerName}");
+
+        return data;
     }
 
-    [ContextMenu("Delete")]
     public void Delete()
     {
         if (!File.Exists(savePath))
-        {
             return;
-        }
 
         File.Delete(savePath);
+
         Debug.Log("Save File Delete Complete");
     }
 }

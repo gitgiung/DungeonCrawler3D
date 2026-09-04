@@ -1,8 +1,11 @@
 using UnityEngine;
+using System;
 
 public class PlayerModel : MonoBehaviour
 {
-    public event System.Action OnChanged;
+    public event Action<int> OnGoldChanged;
+    public event Action<int> OnHPChanged;
+    public event Action<int> OnExpChanged;
 
     [Header("Player Dash")]
     [SerializeField] private GameObject dashShadow;
@@ -11,19 +14,13 @@ public class PlayerModel : MonoBehaviour
         get { return dashShadow; }
     }
 
-    [Header("Player Info")]
-    [SerializeField] private int currentHP;
-    public int CurrentHP
-    {
-        get { return currentHP; }
-        private set { currentHP = value; }
-    }
-
+    public int CurrentHP { get; private set; } = 200;
     public bool IsDead { get; private set; }
-
     public void ReduceHP(int damage)
     {
         CurrentHP = Mathf.Max(CurrentHP - damage, 0);
+
+        OnHPChanged?.Invoke(CurrentHP);
 
         if(CurrentHP <= 0)
         {
@@ -33,7 +30,8 @@ public class PlayerModel : MonoBehaviour
 
     public int Gold { get; private set; }
     public int Exp { get; private set; }
-    public int Level { get; private set; }
+    public int MaxExp { get; private set; } = 500;
+    public int Level { get; private set; } = 1;
 
     public void AddGold(int amount)
     {
@@ -41,8 +39,7 @@ public class PlayerModel : MonoBehaviour
             return;
 
         Gold += amount;
-        Debug.Log($"골드: {Gold}");
-        OnChanged?.Invoke();
+        OnGoldChanged?.Invoke(Gold);
     }
 
     public void AddExp(int amount)
@@ -51,7 +48,15 @@ public class PlayerModel : MonoBehaviour
             return;
 
         Exp += amount;
-        Debug.Log($"경험치: {Exp}");
-        OnChanged?.Invoke();
+        Debug.Log($"현재 경험치: {Exp}");
+        OnExpChanged?.Invoke(Exp);
+    }
+
+    public void LoadData(int level, int gold, int exp, int currentHP)
+    {
+        Level = level;
+        Gold = gold;
+        Exp = exp;
+        CurrentHP = currentHP;
     }
 }

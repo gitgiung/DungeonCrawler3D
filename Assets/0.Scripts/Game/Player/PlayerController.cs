@@ -136,7 +136,6 @@ public class PlayerController : MonoBehaviour, IDamageable
     public void TakeDamage(int damage)
     {
         Model.ReduceHP(damage);
-        View.UpdateHP();
 
         Debug.Log($"Player damage: {damage}, HP: {Model.CurrentHP}");
         if (Model.IsDead)

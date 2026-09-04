@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,12 +14,23 @@ public class PlayerView : MonoBehaviour
     [SerializeField] private GameObject expBar;
     private Image expImg;
 
+    [Header("Gold")]
+    [SerializeField] private TMP_Text currentGold;
+
     private PlayerModel model;
     private PlayerData data;
     public void Initialize(PlayerModel model, PlayerData data)
     {
         this.model = model;
         this.data = data;
+
+        model.OnHPChanged += UpdateHP;
+        model.OnGoldChanged += UpdateGold;
+        model.OnExpChanged += UpdateExp;
+
+        UpdateHP(model.CurrentHP);
+        UpdateGold(model.Gold);
+        UpdateExp(model.Exp);
     }
 
     private void Awake()
@@ -30,18 +42,19 @@ public class PlayerView : MonoBehaviour
 
     // ***UI***
 
-    public void UpdateHP()
+    public void UpdateHP(int currentHp)
     {
-        hpImg.fillAmount =
-            (float)model.CurrentHP /
-            data.MaxHP;
+        hpImg.fillAmount = (float)currentHp / data.MaxHP;
     }
 
-    public void UpdateEXP()
+    public void UpdateExp(int exp)
     {
-        expImg.fillAmount =
-            (float)model.Exp /
-            100;
+        expImg.fillAmount = (float)exp / model.MaxExp;
+    }
+
+    public void UpdateGold(int gold)
+    {
+        currentGold.text = $"{model.Gold}";
     }
 
     // ***Animation***
