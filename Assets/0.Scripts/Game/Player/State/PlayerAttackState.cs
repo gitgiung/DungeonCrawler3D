@@ -11,7 +11,6 @@ public class PlayerAttackState : IState
 
     public void Enter()
     {
-        Debug.Log("Attack Enter");
 
         player.View.PlayAttack();
 
@@ -20,7 +19,6 @@ public class PlayerAttackState : IState
 
     public void Exit()
     {
-        Debug.Log("Attack Exit");
     }
 
     public void Tick()

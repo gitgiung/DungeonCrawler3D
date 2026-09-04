@@ -10,13 +10,11 @@ public class MonsterIdleState : IState
 
     public void Enter()
     {
-        Debug.Log("몬스터 대기상태 진입");
         monster.View.PlayIdle();
     }
 
     public void Exit()
     {
-        Debug.Log("몬스터 대기상태 해제");
     }
 
     public void Tick()

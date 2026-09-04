@@ -10,7 +10,6 @@ public class MonsterPatrolState : IState
 
     public void Enter()
     {
-        Debug.Log("몬스터 복귀 시작");
         monster.SetMoveSpeed(2f); // 이동속도 두 배 증가
         monster.View.PlayPatrol();
         monster.MoveTo(monster.StartPos);
@@ -18,7 +17,6 @@ public class MonsterPatrolState : IState
 
     public void Exit()
     {
-        Debug.Log("몬스터 복귀 중단");
         monster.SetMoveSpeed(1f);
     }
 

@@ -12,12 +12,10 @@ public class MonsterAttackState : IState
 
     public void Enter()
     {
-        Debug.Log("몬스터의 공격 시작");
     }
 
     public void Exit()
     {
-        Debug.Log("몬스터의 공격 끝");
     }
 
     public void Tick()

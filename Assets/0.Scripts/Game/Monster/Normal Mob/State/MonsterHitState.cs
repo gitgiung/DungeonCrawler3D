@@ -12,13 +12,11 @@ public class MonsterHitState : IState
 
     public void Enter()
     {
-        Debug.Log("몬스터 피격");
         monster.View.PlayHit();
     }
 
     public void Exit()
     {
-        Debug.Log("몬스터 재추적");
     }
 
     public void Tick()
