@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(PlayerMovement))]
 [RequireComponent(typeof(PlayerJump))]
 [RequireComponent(typeof(PlayerDash))]
+[RequireComponent(typeof(CameraController))]
 public class PlayerController : MonoBehaviour, IDamageable
 {
     private IState currentState;
@@ -18,6 +19,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     public PlayerDash Dash { get; private set; }
     public PlayerCombat Combat { get; private set; }
     public PlayerInteraction Interaction { get; private set; }
+    public CameraController CameraControl { get; private set; }
 
     public PlayerIdleState IdleState { get; private set; }
     public PlayerMoveState MoveState { get; private set; }
@@ -54,6 +56,8 @@ public class PlayerController : MonoBehaviour, IDamageable
         Dash = GetComponent<PlayerDash>();
         Combat = GetComponent<PlayerCombat>();
         Interaction = GetComponent<PlayerInteraction>();
+        CameraControl = GetComponent<CameraController>();
+        CameraControl.Initialize(this);
 
         IdleState = new PlayerIdleState(this);
         MoveState = new PlayerMoveState(this);
@@ -77,22 +81,22 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     private void Update()
     {
-        if (GameManager.Instance.State != GameState.Playing)
+        CameraControl.Tick();
+
+        if (GameManager.Instance == null || GameManager.Instance.State != GameState.Playing)
         {
             Movement.SetMovement(Vector3.zero);
+            CameraControl.SyncTarget();
             ResetInputs();
             return;
         }
 
-        Vector3 moveDirection = new Vector3(
-            MoveInput.x,
-            0f,
-            MoveInput.y
-        );
+        Vector3 moveDirection = CameraControl.GetMoveDirection(MoveInput);
 
         Movement.SetMovement(moveDirection);
         currentState?.Tick();
         Movement.Tick();
+        CameraControl.SyncTarget();
 
         ResetInputs();
     }
