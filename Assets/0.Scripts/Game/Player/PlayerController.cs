@@ -33,6 +33,10 @@ public class PlayerController : MonoBehaviour, IDamageable
     public bool DashInput { get; private set; }
     public bool AttackInput { get; private set; }
     public bool SprintInput { get; private set; }
+    public bool CanUseCameraInput =>
+        GameManager.Instance != null &&
+        GameManager.Instance.State == GameState.Playing &&
+        (inventoryUI == null || !inventoryUI.activeInHierarchy);
 
     private void Awake()
     {
