@@ -108,25 +108,25 @@ public class PlayerController : MonoBehaviour, IDamageable
         AttackInput = false;
     }
 
-    public void OnMove(InputValue value)
+    private void OnMove(InputValue value)
     {
         MoveInput = value.Get<Vector2>();
     }
 
-    public void OnJump(InputValue value)
+    private void OnJump(InputValue value)
     {
         if (value.isPressed)
             JumpInput = true;
     }
 
-    public void OnDash(InputValue value)
+    private void OnDash(InputValue value)
     {
         if (value.isPressed)
             DashInput = true;
     }
 
     [SerializeField] private GameObject inventoryUI;
-    public void OnAttack(InputValue value)
+    private void OnAttack(InputValue value)
     {
         if (inventoryUI.activeInHierarchy)
             return;
@@ -135,7 +135,7 @@ public class PlayerController : MonoBehaviour, IDamageable
             AttackInput = true;
     }
 
-    public void OnSprint(InputValue value)
+    private void OnSprint(InputValue value)
     {
         SprintInput = value.Get<float>() > 0f;
         Movement.SetSprint(SprintInput);

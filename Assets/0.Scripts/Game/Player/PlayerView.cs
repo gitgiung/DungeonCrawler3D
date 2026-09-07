@@ -7,12 +7,10 @@ public class PlayerView : MonoBehaviour
     private Animator animator;
 
     [Header("HP Bar")]
-    [SerializeField] private GameObject hpBar;
-    private Image hpImg;
+    [SerializeField] private Image hpImg;
 
     [Header("EXP Bar")]
-    [SerializeField] private GameObject expBar;
-    private Image expImg;
+    [SerializeField] private Image expImg;
 
     [Header("Gold")]
     [SerializeField] private TMP_Text currentGold;
@@ -36,8 +34,6 @@ public class PlayerView : MonoBehaviour
     private void Awake()
     {
         animator = GetComponent<Animator>();
-        hpImg = hpBar.transform.Find("CurrentHP").GetComponent<Image>();
-        expImg = expBar.transform.Find("CurrentEXP").GetComponent <Image>();
     }
 
     // ***UI***
