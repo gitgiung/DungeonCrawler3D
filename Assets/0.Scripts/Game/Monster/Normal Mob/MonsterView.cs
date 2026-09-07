@@ -4,13 +4,17 @@ using UnityEngine.UI;
 public class MonsterView : MonoBehaviour
 {
     private Animator animator;
+    private Camera mainCamera;
 
     [Header("HP Bar")]
     [SerializeField] private GameObject hpBar;
     [SerializeField] private Transform uiCanvas;
+
+    [SerializeField] private Vector3 hpOffset = new Vector3(0f, 2f, 0f);
+
     private Image hpImg;
     private GameObject hpBarInstance;
-    
+
     private Monster monster;
 
     public void Initialize(Monster monster)
@@ -23,24 +27,41 @@ public class MonsterView : MonoBehaviour
     private void Awake()
     {
         animator = GetComponent<Animator>();
+        mainCamera = Camera.main;
     }
 
-    private void Update()
+    private void LateUpdate()
     {
         UpdatePosition();
     }
 
-    // ***UI***
+    // *** UI ***
     private void UpdatePosition()
     {
-        Vector3 pos =
-            Camera.main.WorldToScreenPoint(
-                transform.position
-            );
+        if (hpBarInstance == null || mainCamera == null)
+            return;
 
-        pos.y -= 8f;
+        Vector3 worldPosition = transform.position + hpOffset;
 
-        hpBarInstance.transform.position = pos;
+        Vector3 viewportPos =
+            mainCamera.WorldToViewportPoint(worldPosition);
+
+        bool isVisible =
+            viewportPos.z > 0f &&
+            viewportPos.x >= 0f &&
+            viewportPos.x <= 1f &&
+            viewportPos.y >= 0f &&
+            viewportPos.y <= 1f;
+
+        hpBarInstance.SetActive(isVisible);
+
+        if (!isVisible)
+            return;
+
+        Vector3 screenPos =
+            mainCamera.WorldToScreenPoint(worldPosition);
+
+        hpBarInstance.transform.position = screenPos;
     }
 
     private void CreateHPBar()
@@ -56,14 +77,17 @@ public class MonsterView : MonoBehaviour
 
     public void UpdateHP()
     {
+        if (hpImg == null || monster == null)
+            return;
+
         hpImg.fillAmount =
             (float)monster.Model.CurrentHP /
             monster.Data.MaxHP;
     }
 
 
-    // ***Animation***
-    public void PlayIdle()
+// *** Animation ***
+public void PlayIdle()
     {
         animator.Play("Idle");
     }

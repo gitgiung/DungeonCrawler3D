@@ -4,40 +4,50 @@ using TMPro;
 
 public class DamageFontManager : Singleton<DamageFontManager>
 {
-    [SerializeField] TMP_Text damageTxt;
+    [SerializeField] private TMP_Text damageTxt;
 
-    public float jumpHeight = 2f;
-    public float duration = 0.8f;
+    [Header("Damage Text")]
+    [SerializeField] private Vector3 txtOffset = new (0f, 1.5f, 0f);
+    [SerializeField] private float moveDistance = 80f;
+    [SerializeField] private float duration = 0.8f;
 
     public void CreateText(int damage, Vector3 pos)
     {
-        Vector3 uiPos = Camera.main.WorldToScreenPoint(pos);
-        TMP_Text txt = Instantiate(damageTxt, uiPos, Quaternion.identity, transform);
+        // 몬스터 위치보다 위쪽에서 생성
+        Vector3 spawnWorldPos = pos + txtOffset;
+
+        // 월드 좌표 → 화면 좌표
+        Vector3 uiPos = Camera.main.WorldToScreenPoint(spawnWorldPos);
+
+        TMP_Text txt = Instantiate(
+            damageTxt,
+            uiPos,
+            Quaternion.identity,
+            transform
+        );
+
         txt.text = $"{damage}";
 
-        Vector3 startPos = pos;
+        float startY = txt.rectTransform.position.y;
+
+        //프리팹의 알파값이 0으로 남아있을 경우
+        txt.alpha = 1f;
 
         Sequence seq = DOTween.Sequence();
 
-        //위로 튀어오르기
-        seq.Append
-        (
-            transform.DOMoveY(startPos.y + jumpHeight, duration * 0.45f).SetEase(Ease.OutQuad)
+        // 위로 이동
+        seq.Append(
+            txt.rectTransform
+                .DOMoveY(startY + moveDistance, duration)
+                .SetEase(Ease.OutQuad)
         );
 
-        //다시 떨어지기
-        seq.Append
-        (
-            txt.rectTransform.DOMoveY(startPos.y, duration * 0.55f).SetEase(Ease.InQuad)
+        // 위로 이동하면서 동시에 투명해짐
+        seq.Join(
+            txt.DOFade(0f, duration)
         );
 
-        //사라지기
-        seq.Append
-        (
-            txt.rectTransform.DOScale(Vector3.zero, 0.15f).SetEase(Ease.InBack)
-        );
-
-        //애니메이션 끝나면 오브젝트 제거
+        // 애니메이션 종료 후 제거
         seq.OnComplete(() =>
         {
             Destroy(txt.gameObject);

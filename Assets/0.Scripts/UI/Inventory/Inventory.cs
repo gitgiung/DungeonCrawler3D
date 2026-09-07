@@ -21,10 +21,10 @@ public class Inventory : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.F5))
+        if (Input.GetKeyDown(KeyCode.F4))
         {
             int rand = Random.Range(0, itemDatas.Length);
-            CreateItem(itemDatas[rand], 7);
+            CreateItem(itemDatas[rand], 1);
         }
     }
 

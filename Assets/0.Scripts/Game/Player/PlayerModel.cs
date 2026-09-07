@@ -48,7 +48,6 @@ public class PlayerModel : MonoBehaviour
             return;
 
         Exp += amount;
-        Debug.Log($"현재 경험치: {Exp}");
         OnExpChanged?.Invoke(Exp);
     }
 

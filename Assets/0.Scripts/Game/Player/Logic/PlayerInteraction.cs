@@ -7,6 +7,7 @@ public class PlayerInteraction : MonoBehaviour
     [Header("Interact UI")]
     [SerializeField] private Image UI_F;
     [SerializeField] private TMP_Text interactionText;
+    [SerializeField] private Vector3 uiOffset = new Vector3(0f, 0f, 0f);
 
     [SerializeField, Range(1f, 5f)]
     private float interactRadius = 1f;
@@ -74,7 +75,7 @@ public class PlayerInteraction : MonoBehaviour
             HideInteractionUI();
             nearestInteractable.Interact();
         }
-    }
+    }   
 
     private void ShowInteractionUI(string message)
     {
@@ -91,10 +92,8 @@ public class PlayerInteraction : MonoBehaviour
 
     private void UpdatePosition()
     {
-        Vector3 pos =
-            Camera.main.WorldToScreenPoint(
-                transform.position);
-        pos.y += 35f;
+        Vector3 uiPos = transform.position + uiOffset;
+        Vector3 pos = Camera.main.WorldToScreenPoint(uiPos);
 
         UI_F.transform.position = pos;
     }
