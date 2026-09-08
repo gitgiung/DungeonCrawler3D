@@ -2,7 +2,8 @@ using UnityEngine;
 
 public class MonsterIdleState : IState
 {
-    private Monster monster;
+    private readonly Monster monster;
+
     public MonsterIdleState(Monster monster)
     {
         this.monster = monster;
@@ -10,25 +11,27 @@ public class MonsterIdleState : IState
 
     public void Enter()
     {
+        monster.StopMoving();
+        monster.Model.Target = null;
         monster.View.PlayIdle();
-    }
-
-    public void Exit()
-    {
     }
 
     public void Tick()
     {
-        //몬스터 플레이어 감지
-        Collider[] cols = Physics.OverlapSphere(
+        Collider[] colliders = Physics.OverlapSphere(
             monster.transform.position,
             monster.Data.DetectRange,
-            monster.Data.TargetLayer);
+            monster.Data.TargetLayer
+        );
 
-        if (cols.Length == 0)
+        if (colliders.Length == 0)
             return;
 
-        monster.Model.Target = cols[0].transform;
-        monster.ChangeState(new MonsterChaseState(monster));
+        monster.Model.Target = colliders[0].transform;
+        monster.ChangeState(monster.ChaseState);
+    }
+
+    public void Exit()
+    {
     }
 }

@@ -46,6 +46,13 @@ public class InventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
         count += cnt;
         countTxt.text = $"{count}";
     }
+
+    public void LoadItem(int value)
+    {
+        count += value;
+        countTxt.text = $"{count}";
+        Setting();
+    }
     
     // 아이템 클릭
     public void OnUse()

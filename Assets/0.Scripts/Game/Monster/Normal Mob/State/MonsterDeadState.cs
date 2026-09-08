@@ -1,8 +1,7 @@
-using UnityEngine;
-
 public class MonsterDeadState : IState
 {
-    private Monster monster;
+    private readonly Monster monster;
+
     public MonsterDeadState(Monster monster)
     {
         this.monster = monster;
@@ -10,18 +9,19 @@ public class MonsterDeadState : IState
 
     public void Enter()
     {
+        monster.PrepareForDeath();
+
         monster.View.PlayDeath();
+        monster.View.HideHPBar();
 
         monster.Death();
     }
 
-    public void Exit()
-    {
-
-    }
-
     public void Tick()
     {
+    }
 
+    public void Exit()
+    {
     }
 }

@@ -1,7 +1,10 @@
+using System;
 using UnityEngine;
 
 public class MonsterModel : MonoBehaviour
 {
+    public event Action<int> OnHPChange;
+
     [Header("Targeting")]
     [SerializeField] private Transform target;
     public Transform Target
@@ -24,5 +27,6 @@ public class MonsterModel : MonoBehaviour
     public void ReduceHP(int damage)
     {
         currentHP = Mathf.Max(0, currentHP - damage);
+        OnHPChange?.Invoke(currentHP);
     }
 }

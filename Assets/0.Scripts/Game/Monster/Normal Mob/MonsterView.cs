@@ -1,33 +1,60 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class MonsterView : MonoBehaviour
 {
-    private Animator animator;
-    private Camera mainCamera;
+    private static readonly int AttackStateHash =
+        Animator.StringToHash("Jump");
+
+    private static readonly int BaseColorId =
+        Shader.PropertyToID("_BaseColor");
+
+    private static readonly int ColorId =
+        Shader.PropertyToID("_Color");
 
     [Header("HP Bar")]
     [SerializeField] private GameObject hpBar;
     [SerializeField] private Transform uiCanvas;
-
     [SerializeField] private Vector3 hpOffset = new Vector3(0f, 2f, 0f);
+
+    [Header("Damage Flash")]
+    [SerializeField] private Color damageFlashColor = Color.red;
+
+    [SerializeField, Min(0.01f)]
+    private float damageFlashDuration = 0.1f;
+
+    private Renderer[] renderers;
+    private MaterialPropertyBlock[] originalPropertyBlocks;
+    private MaterialPropertyBlock[] flashPropertyBlocks;
+    private Coroutine damageFlashCoroutine;
 
     private Image hpImg;
     private GameObject hpBarInstance;
 
-    private Monster monster;
+    private Animator animator;
+    private Camera mainCamera;
 
-    public void Initialize(Monster monster)
+    private Monster monster;
+    private MonsterModel model;
+
+    public void Initialize(Monster monster, MonsterModel model)
     {
         this.monster = monster;
+        this.model = model;
 
         CreateHPBar();
+
+        model.OnHPChange += UpdateHP;
+        UpdateHP(model.CurrentHP);
     }
 
     private void Awake()
     {
         animator = GetComponent<Animator>();
         mainCamera = Camera.main;
+
+        CacheRenderers();
     }
 
     private void LateUpdate()
@@ -71,23 +98,32 @@ public class MonsterView : MonoBehaviour
         hpImg = hpBarInstance.transform
             .Find("CurrentHP")
             .GetComponent<Image>();
-
-        UpdateHP();
     }
 
-    public void UpdateHP()
+    public void UpdateHP(int currentHP)
     {
         if (hpImg == null || monster == null)
             return;
 
         hpImg.fillAmount =
-            (float)monster.Model.CurrentHP /
+            (float)currentHP /
             monster.Data.MaxHP;
     }
 
+    public void HideHPBar()
+    {
+        if (hpBarInstance != null)
+            hpBarInstance.SetActive(false);
+    }
 
-// *** Animation ***
-public void PlayIdle()
+    private void OnDestroy()
+    {
+        if (hpBarInstance != null)
+            Destroy(hpBarInstance);
+    }
+
+    // *** Animation ***
+    public void PlayIdle()
     {
         animator.Play("Idle");
     }
@@ -109,11 +145,130 @@ public void PlayIdle()
 
     public void PlayHit()
     {
-        animator.Play("TPose");
+        animator.Play("TPose", 0, 0f);
     }
 
     public void PlayDeath()
     {
-        animator.Play("Loose");
+        animator.Play("Loose", 0, 0f);
+    }
+
+    public bool IsAttackAnimationFinished()
+    {
+        if (animator == null || !animator.enabled)
+            return true;
+
+        AnimatorStateInfo stateInfo =
+            animator.GetCurrentAnimatorStateInfo(0);
+
+        bool isAttackState =
+            stateInfo.shortNameHash == AttackStateHash;
+
+        if (!isAttackState)
+            return false;
+
+        return stateInfo.normalizedTime >= 1f &&
+               !animator.IsInTransition(0);
+    }
+
+    // *** Damage Flash ***
+
+    private void CacheRenderers()
+    {
+        renderers = GetComponentsInChildren<Renderer>(true);
+
+        originalPropertyBlocks =
+            new MaterialPropertyBlock[renderers.Length];
+
+        flashPropertyBlocks =
+            new MaterialPropertyBlock[renderers.Length];
+
+        for (int i = 0; i < renderers.Length; i++)
+        {
+            originalPropertyBlocks[i] =
+                new MaterialPropertyBlock();
+
+            flashPropertyBlocks[i] =
+                new MaterialPropertyBlock();
+
+            renderers[i].GetPropertyBlock(
+                originalPropertyBlocks[i]
+            );
+
+            renderers[i].GetPropertyBlock(
+                flashPropertyBlocks[i]
+            );
+
+            // URP Lit Shader
+            flashPropertyBlocks[i].SetColor(
+                BaseColorId,
+                damageFlashColor
+            );
+
+            // Standard Shader
+            flashPropertyBlocks[i].SetColor(
+                ColorId,
+                damageFlashColor
+            );
+        }
+    }
+
+    public void PlayDamageFlash()
+    {
+        if (!isActiveAndEnabled || renderers.Length == 0)
+            return;
+
+        // 연속 피격 시 기존 점멸을 중단하고 원래 색으로 되돌린다.
+        if (damageFlashCoroutine != null)
+        {
+            StopCoroutine(damageFlashCoroutine);
+            RestoreRendererColors();
+        }
+
+        damageFlashCoroutine =
+            StartCoroutine(DamageFlashRoutine());
+    }
+
+    private IEnumerator DamageFlashRoutine()
+    {
+        ApplyFlashColor();
+
+        yield return new WaitForSeconds(damageFlashDuration);
+
+        RestoreRendererColors();
+
+        damageFlashCoroutine = null;
+    }
+
+    private void ApplyFlashColor()
+    {
+        for (int i = 0; i < renderers.Length; i++)
+        {
+            if (renderers[i] == null)
+                continue;
+
+            renderers[i].SetPropertyBlock(
+                flashPropertyBlocks[i]
+            );
+        }
+    }
+
+    private void RestoreRendererColors()
+    {
+        if (renderers == null ||
+            originalPropertyBlocks == null)
+        {
+            return;
+        }
+
+        for (int i = 0; i < renderers.Length; i++)
+        {
+            if (renderers[i] == null)
+                continue;
+
+            renderers[i].SetPropertyBlock(
+                originalPropertyBlocks[i]
+            );
+        }
     }
 }

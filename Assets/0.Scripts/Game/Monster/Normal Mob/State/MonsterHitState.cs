@@ -2,29 +2,50 @@ using UnityEngine;
 
 public class MonsterHitState : IState
 {
-    private Monster monster;
+    private readonly Monster monster;
+    private float stunTimer;
+
     public MonsterHitState(Monster monster)
     {
         this.monster = monster;
     }
 
-    private float stunTimer = 0f;
-
     public void Enter()
     {
-        monster.View.PlayHit();
-    }
+        stunTimer = 0f;
 
-    public void Exit()
-    {
+        monster.StopMoving();
+        monster.View.PlayHit();
     }
 
     public void Tick()
     {
         stunTimer += Time.deltaTime;
-        if(stunTimer > monster.Data.StunTime)
+
+        if (stunTimer < monster.Data.StunTime)
+            return;
+
+        if (monster.Model.Target == null)
         {
-            monster.ChangeState(new MonsterIdleState(monster));
+            monster.ChangeState(monster.IdleState);
+            return;
         }
+
+        float distance = Vector3.Distance(
+            monster.transform.position,
+            monster.Model.Target.position
+        );
+
+        if (distance > monster.Data.LoseTargetRange)
+        {
+            monster.ChangeState(monster.PatrolState);
+            return;
+        }
+
+        monster.ChangeState(monster.ChaseState);
+    }
+
+    public void Exit()
+    {
     }
 }

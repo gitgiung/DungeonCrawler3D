@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 public class SaveTest : MonoBehaviour
 {
     [SerializeField] private PlayerModel playerModel;
+    [SerializeField] private Inventory inventory;
 
     private void Update()
     {
@@ -36,7 +37,9 @@ public class SaveTest : MonoBehaviour
                 gold = playerModel.Gold,
                 exp = playerModel.Exp,
                 currentHP = playerModel.CurrentHP
-            }
+            },
+
+            inventoryItems = inventory.GetSaveData()
         };
 
         SaveManager.Instance.Save(data);
@@ -64,6 +67,8 @@ public class SaveTest : MonoBehaviour
             playerData.exp,
             playerData.currentHP
         );
+
+        inventory.LoadData(data.inventoryItems);
 
         Debug.Log(
             $"·Îµå - Lv:{playerModel.Level}, " +

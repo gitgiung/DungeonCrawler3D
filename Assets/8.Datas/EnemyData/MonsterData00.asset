@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bec9a0a72dd5edc44aab843c2bfe8c3b, type: 3}
   m_Name: MonsterData00
   m_EditorClassIdentifier: Assembly-CSharp::EnemyData
+  monsterID: 0
+  monsterType: 0
   targetLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -20,6 +22,8 @@ MonoBehaviour:
   attackDamage: 5
   attackDelay: 2
   attackRange: 2
-  stunTime: 1
+  attackWidth: 1.5
+  attackHeight: 2
+  stunTime: 1.5
   maxHP: 100
   moveSpeed: 3

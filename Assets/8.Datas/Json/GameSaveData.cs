@@ -8,8 +8,6 @@ public class PlayerSaveData
     public int gold;
     public int exp;
     public int currentHP;
-
-    public List<InventoryItemSaveData> inventoryItems = new();
 }
 
 [System.Serializable]
@@ -29,5 +27,5 @@ public class InventoryItemSaveData
 public class GameSaveData
 {
     public PlayerSaveData player;
-    public InventoryItemSaveData inventory;
+    public List<InventoryItemSaveData> inventoryItems = new();
 }

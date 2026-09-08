@@ -30,7 +30,7 @@ public class Inventory : MonoBehaviour
 
     public int CreateItem(ItemScriptable data, int amount)
     {
-        // 1. 기존 스택 중 여유가 있는 곳부터 채우기
+        // 기존 스택 중 여유가 있는 곳부터 채우기
         foreach (var item in items)
         {
             if (item.Data.ItemID != data.ItemID)
@@ -50,7 +50,7 @@ public class Inventory : MonoBehaviour
                 return 0;
         }
 
-        // 2. 그래도 수량이 남아있다면 새로운 스택 생성
+        // 그래도 수량이 남아있다면 새로운 스택 생성
         while (amount > 0)
         {
             int stackAmount = Mathf.Min((int)data.MaxStack, amount);
@@ -75,5 +75,71 @@ public class Inventory : MonoBehaviour
     {
         items.Remove(item);
         Destroy(item.gameObject);
+    }
+
+    public List<InventoryItemSaveData> GetSaveData()
+    {
+        List<InventoryItemSaveData> saveItems = new();
+
+        foreach (InventoryItem item in items)
+        {
+            if (item == null || item.Data == null)
+                continue;
+
+            saveItems.Add(new InventoryItemSaveData(
+                item.Data.ItemID,
+                item.Count
+            ));
+        }
+
+        return saveItems;
+    }
+
+    public ItemScriptable GetItemData(int itemID)
+    {
+        foreach (ItemScriptable data in itemDatas)
+        {
+            if (data.ItemID == itemID)
+                return data;
+        }
+
+        return null;
+    }
+
+    public void LoadData(List<InventoryItemSaveData> saveItems)
+    {
+        ClearInventory();
+
+        foreach (InventoryItemSaveData saveItem in saveItems)
+        {
+            ItemScriptable data = GetItemData(saveItem.itemID);
+
+            if (data == null)
+            {
+                Debug.LogWarning($"아이템 데이터를 찾을 수 없습니다. ID : {saveItem.itemID}");
+                continue;
+            }
+
+            InventoryItem newItem = Instantiate(
+                invenItem,
+                parent
+            );
+
+            newItem.Init(data, this);
+            newItem.LoadItem(saveItem.count);
+
+            items.Add(newItem);
+        }
+    }
+
+    public void ClearInventory()
+    {
+        foreach (InventoryItem item in items)
+        {
+            if (item != null)
+                Destroy(item.gameObject);
+        }
+
+        items.Clear();
     }
 }

@@ -57,5 +57,9 @@ public class PlayerModel : MonoBehaviour
         Gold = gold;
         Exp = exp;
         CurrentHP = currentHP;
+
+        OnGoldChanged?.Invoke(Gold);
+        OnExpChanged?.Invoke(Exp);
+        OnHPChanged?.Invoke(CurrentHP);
     }
 }
