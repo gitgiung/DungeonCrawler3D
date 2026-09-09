@@ -4,6 +4,13 @@ using UnityEngine.UI;
 
 public class PlayerView : MonoBehaviour
 {
+    private static readonly int IdleStateHash = Animator.StringToHash("S&S_Idle");
+    private static readonly int MoveStateHash = Animator.StringToHash("S&S_Run");
+    private static readonly int SprintStateHash = Animator.StringToHash("S&S_ShieldRushLoop");
+    private static readonly int AttackStateHash = Animator.StringToHash("S&S_SwordAttack1");
+    private static readonly int HitStateHash = Animator.StringToHash("S&S_Hit");
+    private static readonly int DeadStateHash = Animator.StringToHash("S&S_Death");
+
     private Animator animator;
 
     [Header("HP Bar")]
@@ -16,11 +23,9 @@ public class PlayerView : MonoBehaviour
     [SerializeField] private TMP_Text currentGold;
 
     private PlayerModel model;
-    private PlayerData data;
-    public void Initialize(PlayerModel model, PlayerData data)
+    public void Init(PlayerModel model)
     {
         this.model = model;
-        this.data = data;
 
         model.OnHPChanged += UpdateHP;
         model.OnGoldChanged += UpdateGold;
@@ -37,10 +42,9 @@ public class PlayerView : MonoBehaviour
     }
 
     // ***UI***
-
     public void UpdateHP(int currentHp)
     {
-        hpImg.fillAmount = (float)currentHp / data.MaxHP;
+        hpImg.fillAmount = (float)currentHp / model.MaxHP;
     }
 
     public void UpdateExp(int exp)
@@ -56,31 +60,49 @@ public class PlayerView : MonoBehaviour
     // ***Animation***
     public void PlayIdle()
     {
-        animator.Play("S&S_Idle");
+        animator.Play(IdleStateHash);
     }
 
     public void PlayMove()
     {
-        animator.Play("S&S_Run");
+        animator.Play(MoveStateHash);
     }
 
     public void PlaySprint()
     {
-        animator.Play("S&S_ShieldRushLoop");
+        animator.Play(SprintStateHash);
     }
 
     public void PlayAttack()
     {
-        animator.Play("S&S_SwordAttack1");
+        animator.Play(AttackStateHash);
     }
 
-    public bool IsAnimationFinished()
+    public void PlayHit()
+    {
+        animator.Play(HitStateHash);
+    }
+
+    public void PlayDead()
+    {
+        animator.Play(DeadStateHash);
+    }
+
+    public bool IsAttackAnimationFinished()
+    {
+        return IsAnimationFinished(AttackStateHash);
+    }
+
+    public bool IsHitAnimationFinished()
+    {
+        return IsAnimationFinished(HitStateHash);
+    }
+
+    private bool IsAnimationFinished(int stateHash)
     {
         AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
 
-        if (!stateInfo.IsName("S&S_SwordAttack1"))
-            return false;
-
-        return stateInfo.normalizedTime >= 1f;
+        return stateInfo.shortNameHash == stateHash &&
+               stateInfo.normalizedTime >= 1f;
     }
 }

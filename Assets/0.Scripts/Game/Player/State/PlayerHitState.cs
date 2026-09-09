@@ -11,16 +11,28 @@ public class PlayerHitState : IState
 
     public void Enter()
     {
-        Debug.Log("Player Hit Enter");
+        player.Movement.SetCanMove(false);
+        player.Interaction.enabled = false;
+        player.View.PlayHit();
     }
 
     public void Exit()
     {
-        Debug.Log("Player Hit Exit");
+        player.Interaction.enabled = true;
     }
 
     public void Tick()
     {
+        if (!player.View.IsHitAnimationFinished())
+            return;
 
+        if (!player.Jump.IsGround)
+            return;
+
+        player.ChangeState(
+            player.HasMoveInput
+                ? player.MoveState
+                : player.IdleState
+        );
     }
 }

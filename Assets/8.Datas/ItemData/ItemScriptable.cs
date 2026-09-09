@@ -33,6 +33,9 @@ public class ItemScriptable : ScriptableObject
     [SerializeField] private int defence;
     public int Defence => defence;
 
+    [SerializeField] private int maxhp;
+    public int MaxHP => maxhp;
+
     [SerializeField] private int speed;
     public int Speed => speed;
 }

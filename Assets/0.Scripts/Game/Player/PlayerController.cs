@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour, IDamageable
 {
     private IState currentState;
 
+    [SerializeField] private GameObject inventoryUI;
     [SerializeField] private PlayerData data;
     public PlayerData Data => data;
     public PlayerModel Model { get; private set; }
@@ -67,7 +68,11 @@ public class PlayerController : MonoBehaviour, IDamageable
         AttackState = new PlayerAttackState(this);
         HitState = new PlayerHitState(this);
 
-        View.Initialize(Model, data);
+        Model.OnDeathStateChanged += HandleDeathStateChanged;
+        Model.Init(data.MaxHP);
+
+
+        View.Init(Model);
         Movement.Initialize(data);
         Jump.Initialize(data);
         Dash.Initialize(Model, data);
@@ -125,7 +130,6 @@ public class PlayerController : MonoBehaviour, IDamageable
             DashInput = true;
     }
 
-    [SerializeField] private GameObject inventoryUI;
     private void OnAttack(InputValue value)
     {
         if (inventoryUI.activeInHierarchy)
@@ -143,13 +147,24 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     public void TakeDamage(int damage)
     {
-        Model.ReduceHP(damage);
+        bool damageApplied = Model.ReduceHP(damage);
 
-        if (Model.IsDead)
+        if (!damageApplied || Model.IsDead)
+            return;
+
+        ChangeState(HitState);
+    }
+
+    private void HandleDeathStateChanged(bool isDead)
+    {
+        if (isDead)
         {
-            Debug.Log($"{name} died");
-            // ChangeState(DeadState);
+            ChangeState(DeadState);
+            return;
         }
+
+        if (currentState == DeadState)
+            ChangeState(IdleState);
     }
 
     public void ChangeState(IState newState)
@@ -160,5 +175,11 @@ public class PlayerController : MonoBehaviour, IDamageable
         currentState?.Exit();
         currentState = newState;
         currentState?.Enter();
+    }
+
+    private void OnDestroy()
+    {
+        if (Model != null)
+            Model.OnDeathStateChanged -= HandleDeathStateChanged;
     }
 }

@@ -11,7 +11,6 @@ public class PlayerAttackState : IState
 
     public void Enter()
     {
-
         player.View.PlayAttack();
 
         player.Combat.Attack();
@@ -23,9 +22,13 @@ public class PlayerAttackState : IState
 
     public void Tick()
     {
-        if (player.View.IsAnimationFinished())
+        if (player.View.IsAttackAnimationFinished())
         {
-            player.ChangeState(player.IdleState);
+            player.ChangeState(
+            player.HasMoveInput
+                ? player.MoveState
+                : player.IdleState
+        );
         }
     }
 }

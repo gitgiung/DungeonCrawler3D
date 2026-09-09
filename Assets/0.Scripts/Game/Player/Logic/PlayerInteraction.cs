@@ -29,6 +29,11 @@ public class PlayerInteraction : MonoBehaviour
         CheckInteractable();
     }
 
+    private void OnDisable()
+    {
+        HideInteractionUI();
+    }
+
     private void CheckInteractable()
     {
         checkPosition = transform.position;

@@ -1,5 +1,6 @@
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class UIController : Singleton<UIController>
 {
@@ -13,10 +14,6 @@ public class UIController : Singleton<UIController>
         if (Input.GetKeyUp(KeyCode.I))
         {
             inventory.gameObject.SetActive(!inventory.gameObject.activeInHierarchy);
-        }
-
-        if (Input.GetKeyUp(KeyCode.E))
-        {
             equipmentSystem.gameObject.SetActive(!equipmentSystem.gameObject.activeInHierarchy);
         }
     }

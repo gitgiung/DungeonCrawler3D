@@ -11,17 +11,18 @@ public class PlayerDeadState : IState
 
     public void Enter()
     {
-        Debug.Log("Player Died");
-        //이후 정지할 것 처리
+        player.Movement.SetCanMove(false);
+        player.Dash.StopDash();
+        player.Interaction.enabled = false;
+        player.View.PlayDead();
     }
 
     public void Exit()
     {
-
+        player.Interaction.enabled = true;
     }
 
     public void Tick()
     {
-        
     }
 }
