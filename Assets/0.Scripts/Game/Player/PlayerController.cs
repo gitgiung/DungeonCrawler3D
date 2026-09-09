@@ -69,7 +69,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         HitState = new PlayerHitState(this);
 
         Model.OnDeathStateChanged += HandleDeathStateChanged;
-        Model.Init(data.MaxHP);
+        Model.Init(data);
 
 
         View.Init(Model);

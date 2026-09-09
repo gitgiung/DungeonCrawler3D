@@ -51,8 +51,8 @@ public class PlayerData : ScriptableObject
     public float AttackRadius => attackRadius;
 
     [Header("Player Level")]
-    [SerializeField, Min(0)] private int maxHPPerLevel = 20;
-    public int MaxHPPerLevel => maxHPPerLevel;
+    [SerializeField, Min(0)] private int maxHpPerLevel = 20;
+    public int MaxHpPerLevel => maxHpPerLevel;
 
     [SerializeField, Min(0)] private int attackDamagePerLevel = 2;
     public int AttackDamagePerLevel => attackDamagePerLevel;

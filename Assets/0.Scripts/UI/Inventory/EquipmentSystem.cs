@@ -16,10 +16,6 @@ public class EquipmentSystem : Singleton<EquipmentSystem>
     {
         if (playerModel == null)
         {
-            Debug.LogError(
-                "PlayerModel is not assigned to EquipmentSystem.",
-                this
-            );
             return;
         }
 
@@ -42,7 +38,7 @@ public class EquipmentSystem : Singleton<EquipmentSystem>
             }
         }
 
-        playerModel.SetEquipmentBonuses(
+        playerModel.SetEquipmentStats(
             totalMaxHP,
             totalDamage,
             totalDefence,

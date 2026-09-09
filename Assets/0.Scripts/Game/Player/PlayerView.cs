@@ -34,6 +34,7 @@ public class PlayerView : MonoBehaviour
         model.OnGoldChanged += UpdateGold;
         model.OnExpChanged += UpdateExp;
         model.OnLevelChanged += UpdateLevel;
+        model.OnStatsChanged += UpdateStats;
 
         UpdateHP(model.CurrentHP);
         UpdateGold(model.Gold);
@@ -47,24 +48,30 @@ public class PlayerView : MonoBehaviour
     }
 
     // ***UI***
-    public void UpdateHP(int currentHp)
+    private void UpdateHP(int currentHp)
     {
         hpImg.fillAmount = (float)currentHp / model.MaxHP;
     }
 
-    public void UpdateExp(int exp)
+    private void UpdateExp(int exp)
     {
-        expImg.fillAmount = (float)exp / model.MaxExp;
+        expImg.fillAmount = (float)exp / model.RequiredExp;
     }
 
-    public void UpdateGold(int gold)
+    private void UpdateGold(int gold)
     {
         currentGold.text = $"{model.Gold}";
     }
 
-    public void UpdateLevel(int level)
+    private void UpdateLevel(int level)
     {
         currentLevel.text = $"{model.Level}";
+    }
+
+    private void UpdateStats()
+    {
+        UpdateHP(model.CurrentHP);
+        UpdateExp(model.Exp);
     }
 
     private void OnDestroy()
@@ -73,6 +80,7 @@ public class PlayerView : MonoBehaviour
         model.OnGoldChanged -= UpdateGold;
         model.OnExpChanged -= UpdateExp;
         model.OnLevelChanged -= UpdateLevel;
+        model.OnStatsChanged -= UpdateStats;
     }
 
     // ***Animation***
