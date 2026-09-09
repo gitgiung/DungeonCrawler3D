@@ -39,6 +39,8 @@ public class Loading : Singleton<Loading>
             yield return null;
         }
 
+        System.GC.Collect();
+
         loadingBar.value = 1f;
         loadingText.text = $"Loading . . . 100%";
 

@@ -6,14 +6,8 @@ public class PlayerModel : MonoBehaviour
     public event Action<int> OnGoldChanged;
     public event Action<int> OnHPChanged;
     public event Action<int> OnExpChanged;
+    public event Action<int> OnLevelChanged;
     public event Action<bool> OnDeathStateChanged;
-
-    [Header("Player Dash")]
-    [SerializeField] private GameObject dashShadow;
-    public GameObject DashShadow
-    {
-        get { return dashShadow; }
-    }
 
     public int MaxHP { get; private set; }
     public int CurrentHP { get; private set; }
@@ -46,6 +40,15 @@ public class PlayerModel : MonoBehaviour
 
         Exp += amount;
         OnExpChanged?.Invoke(Exp);
+    }
+
+    public void LevelUP(int value)
+    {
+        if (value < 0)
+            return;
+
+        Level += value;
+        OnLevelChanged?.Invoke(Level);
     }
 
     private void SetHP(int value)
@@ -83,5 +86,11 @@ public class PlayerModel : MonoBehaviour
 
         OnGoldChanged?.Invoke(Gold);
         OnExpChanged?.Invoke(Exp);
+        OnLevelChanged?.Invoke(Level);
+    }
+
+    public void SetEquipmentBonuses(int maxhp, int damage, int defence, float speed)
+    {
+
     }
 }

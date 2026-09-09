@@ -22,6 +22,9 @@ public class PlayerView : MonoBehaviour
     [Header("Gold")]
     [SerializeField] private TMP_Text currentGold;
 
+    [Header("Level")]
+    [SerializeField] private TMP_Text currentLevel;
+
     private PlayerModel model;
     public void Init(PlayerModel model)
     {
@@ -30,10 +33,12 @@ public class PlayerView : MonoBehaviour
         model.OnHPChanged += UpdateHP;
         model.OnGoldChanged += UpdateGold;
         model.OnExpChanged += UpdateExp;
+        model.OnLevelChanged += UpdateLevel;
 
         UpdateHP(model.CurrentHP);
         UpdateGold(model.Gold);
         UpdateExp(model.Exp);
+        UpdateLevel(model.Level);
     }
 
     private void Awake()
@@ -55,6 +60,19 @@ public class PlayerView : MonoBehaviour
     public void UpdateGold(int gold)
     {
         currentGold.text = $"{model.Gold}";
+    }
+
+    public void UpdateLevel(int level)
+    {
+        currentLevel.text = $"{model.Level}";
+    }
+
+    private void OnDestroy()
+    {
+        model.OnHPChanged -= UpdateHP;
+        model.OnGoldChanged -= UpdateGold;
+        model.OnExpChanged -= UpdateExp;
+        model.OnLevelChanged -= UpdateLevel;
     }
 
     // ***Animation***

@@ -6,7 +6,6 @@ public class PlayerDash : MonoBehaviour
     private const float ShadowLifetime = 0.2f;
 
     private PlayerData data;
-    private PlayerModel model;
     private Vector3 dashDirection;
     private float remainingTime;
     private float shadowTimer;
@@ -16,9 +15,8 @@ public class PlayerDash : MonoBehaviour
         ? dashDirection * data.DashSpeed
         : Vector3.zero;
 
-    public void Initialize(PlayerModel model, PlayerData data)
+    public void Initialize(PlayerData data)
     {
-        this.model = model;
         this.data = data;
     }
 
@@ -66,11 +64,11 @@ public class PlayerDash : MonoBehaviour
 
     private void CreateShadow()
     {
-        if (model.DashShadow == null)
+        if (data.DashShadow == null)
             return;
 
         GameObject shadow = Instantiate(
-            model.DashShadow,
+            data.DashShadow,
             transform.position,
             transform.rotation
         );

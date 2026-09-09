@@ -75,7 +75,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         View.Init(Model);
         Movement.Initialize(data);
         Jump.Initialize(data);
-        Dash.Initialize(Model, data);
+        Dash.Initialize(data);
         Combat.Initialize(data);
     }
 

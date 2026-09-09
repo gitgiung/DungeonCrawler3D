@@ -2,48 +2,51 @@ using UnityEngine;
 
 public class EquipmentSystem : Singleton<EquipmentSystem>
 {
-    public EquipmentSlot[] slots;
+    [SerializeField] private PlayerModel playerModel;
+    [SerializeField] private EquipmentSlot[] slots;
+
     public EquipmentSlot SelectSlot { get; set; }
 
-    public int EquipTotalDamage()
+    private void Start()
     {
-        int totalValue = 0;
-
-        foreach (EquipmentSlot slot in slots)
-        {
-            if (slot.Data != null)
-            {
-                totalValue += slot.Data.Damage;
-            }
-        }
-        return totalValue;
+        RefreshStats();
     }
 
-    public int EquipTotalDefence()
+    public void RefreshStats()
     {
-        int totalValue = 0;
-
-        foreach (EquipmentSlot slot in slots)
+        if (playerModel == null)
         {
-            if (slot.Data != null)
+            Debug.LogError(
+                "PlayerModel is not assigned to EquipmentSystem.",
+                this
+            );
+            return;
+        }
+
+        int totalMaxHP = 0;
+        int totalDamage = 0;
+        int totalDefence = 0;
+        float totalSpeed = 0f;
+
+        if (slots != null)
+        {
+            foreach (EquipmentSlot slot in slots)
             {
-                totalValue += slot.Data.Defence;
+                if (slot == null || slot.Data == null)
+                    continue;
+
+                totalMaxHP += slot.Data.MaxHP;
+                totalDamage += slot.Data.Damage;
+                totalDefence += slot.Data.Defence;
+                totalSpeed += slot.Data.Speed;
             }
         }
-        return totalValue;
-    }
 
-    public float EquipTotalSpeed()
-    {
-        float totalValue = 0;
-
-        foreach(EquipmentSlot slot in slots)
-        {
-            if (slot.Data != null)
-            {
-                totalValue += slot.Data.Speed;
-            }
-        }
-        return totalValue;
+        playerModel.SetEquipmentBonuses(
+            totalMaxHP,
+            totalDamage,
+            totalDefence,
+            totalSpeed
+        );
     }
 }

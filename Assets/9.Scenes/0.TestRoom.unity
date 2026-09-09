@@ -1607,6 +1607,7 @@ MonoBehaviour:
   txtBGObj: {fileID: 708472039}
   iconImg: {fileID: 1130934240}
   itemNameTxt: {fileID: 862743297}
+  data: {fileID: 0}
 --- !u!1 &97804192
 GameObject:
   m_ObjectHideFlags: 0
@@ -7330,6 +7331,7 @@ MonoBehaviour:
   txtBGObj: {fileID: 1569706876}
   iconImg: {fileID: 615235968}
   itemNameTxt: {fileID: 224689087}
+  data: {fileID: 0}
 --- !u!114 &362867198
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14148,7 +14150,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f220e6940b7a6a949ba49ad64914d504, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EquipmentSystem
-  slots: []
+  playerModel: {fileID: 8353505889464187683}
+  slots:
+  - {fileID: 1690260408}
+  - {fileID: 362867197}
+  - {fileID: 91923617}
+  - {fileID: 894894499}
 --- !u!114 &830024950
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14951,6 +14958,7 @@ MonoBehaviour:
   txtBGObj: {fileID: 212644355}
   iconImg: {fileID: 790336731}
   itemNameTxt: {fileID: 574332012}
+  data: {fileID: 0}
 --- !u!114 &894894500
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -28339,6 +28347,7 @@ MonoBehaviour:
   txtBGObj: {fileID: 728174203}
   iconImg: {fileID: 1110609344}
   itemNameTxt: {fileID: 1430327415}
+  data: {fileID: 0}
 --- !u!114 &1690260409
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -41970,7 +41979,12 @@ Animator:
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_AnimatePhysics: 0
-  m_WarningMessage: 
+  m_WarningMessage: "\nBinding warning: Some generic clip(s) animate transforms that
+    are already bound by a Humanoid avatar. These transforms can only be changed
+    by Humanoid clips.\n\tTransform 'Hips'\n\tTransform 'LeftArm'\n\tTransform 'Hips'\n\tTransform
+    'RightShoulder'\n\tTransform 'LeftToeBase'\n\tTransform 'LeftShoulder'\n\tTransform
+    'LeftFoot'\n\tTransform 'RightToeBase'\n\tTransform 'LeftForeArm'\n\tTransform
+    'Spine'\n\tand more ...\n\tFrom animation clip 'mixamo.com'"
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
@@ -61452,7 +61466,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bdc52883eb85bb147bb00a59b50a867e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerModel
-  dashShadow: {fileID: 2424473977305403554, guid: fa0def0d1f628394986e019db3ea6c29, type: 3}
 --- !u!114 &8353505889464187685
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -61534,6 +61547,7 @@ MonoBehaviour:
   hpImg: {fileID: 8944566243320757937}
   expImg: {fileID: 2122931876}
   currentGold: {fileID: 1456765571}
+  currentLevel: {fileID: 1457359403}
 --- !u!4 &8400218865265568692
 Transform:
   m_ObjectHideFlags: 0

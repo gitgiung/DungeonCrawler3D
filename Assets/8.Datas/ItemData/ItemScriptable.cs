@@ -6,7 +6,7 @@ public enum ItemType
     Equipment
 }
 
-[CreateAssetMenu(fileName = "ItemData")]
+[CreateAssetMenu(fileName = "ItemData", menuName = "GameData/ItemData")]
 public class ItemScriptable : ScriptableObject
 {
     [SerializeField] private int itemID;

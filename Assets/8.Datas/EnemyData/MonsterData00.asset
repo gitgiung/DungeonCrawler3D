@@ -19,7 +19,7 @@ MonoBehaviour:
     m_Bits: 256
   detectRange: 4
   loseTargetRange: 6
-  attackDamage: 5
+  attackDamage: 40
   attackDelay: 2
   attackRange: 2
   attackWidth: 1.5

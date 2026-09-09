@@ -6,7 +6,7 @@ public enum MonsterType
     Boss
 }
 
-[CreateAssetMenu(fileName = "MonsterData", menuName = "MonsterData/Data")]
+[CreateAssetMenu(fileName = "MonsterData", menuName = "GameData/MonsterData")]
 public class EnemyData : ScriptableObject
 {
     [Header("ID / Type")]

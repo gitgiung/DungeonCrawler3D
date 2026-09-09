@@ -10,7 +10,7 @@ public enum QuestType
     Kill, Collect
 }
 
-[CreateAssetMenu(fileName = "QuestData", menuName = "Game/Data/Quest")]
+[CreateAssetMenu(fileName = "QuestData", menuName = "GameData/QuestData")]
 public class QuestData : ScriptableObject
 {
     [Header("Info")]

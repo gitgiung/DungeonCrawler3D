@@ -9,8 +9,8 @@ public class EquipmentSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     [SerializeField] private Image iconImg;
     [SerializeField] private TMP_Text itemNameTxt;
 
-    private MoveItem moveItem;
-    public ItemScriptable Data { get; set; }
+    [SerializeField] private ItemScriptable data;
+    public ItemScriptable Data => data;
 
     public void Start()
     {
@@ -36,16 +36,34 @@ public class EquipmentSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         if (data.ItemType != ItemType.Equipment)
             return;
 
-        iconImg.sprite = data.Icon;
-        itemNameTxt.text = data.ItemName;
+        this.data = data;
+
+        iconImg.sprite = this.data.Icon;
+        itemNameTxt.text = this.data.ItemName;
 
         iconImg.gameObject.SetActive(true);
         txtBGObj.SetActive(true);
+
+        RefreshEquipmentStats();
     }
 
     public void UnEquip()
     {
+        data = null;
+
+        iconImg.sprite = null;
+        itemNameTxt.text = string.Empty;
         iconImg.gameObject.SetActive(false);
         txtBGObj.SetActive(false);
+
+        RefreshEquipmentStats();
+    }
+
+    private void RefreshEquipmentStats()
+    {
+        EquipmentSystem equipmentSystem = EquipmentSystem.Instance;
+
+        if (equipmentSystem != null)
+            equipmentSystem.RefreshStats();
     }
 }
