@@ -9,8 +9,6 @@ public class PlayerInteraction : MonoBehaviour
     [SerializeField] private TMP_Text interactionText;
     [SerializeField] private Vector3 uiOffset = new Vector3(0f, 0f, 0f);
 
-    public bool IsFKeyPressed { get; set; }
-
     [SerializeField, Range(1f, 5f)]
     private float interactRadius = 1f;
 

@@ -28,7 +28,7 @@ public class PlayerModel : MonoBehaviour
     public int Gold { get; private set; }
     public int Exp { get; private set; }
     public int Level { get; private set; } = 1;
-    public int MaxExp => data == null ? 0 : data.GetMaxExp(Level);
+    public int MaxExp => data == null ? 1 : data.GetMaxExp(Level);
     
     public void Init(PlayerData playerData)
     {

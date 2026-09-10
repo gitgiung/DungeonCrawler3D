@@ -73,12 +73,12 @@ public class PlayerData : ScriptableObject
     public int GetMaxExp(int level)
     {
         if (level < 1 || level >= MaxLevel)
-            return 0;
+            return 1;
 
         int index = level - 1;
 
         if (maxExpByLevel == null || index >= maxExpByLevel.Length)
-            return 0;
+            return 1;
 
         return Mathf.Max(1, maxExpByLevel[index]);
     }

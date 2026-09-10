@@ -4,14 +4,11 @@ using UnityEngine.UI;
 
 public class MonsterView : MonoBehaviour
 {
-    private static readonly int AttackStateHash =
-        Animator.StringToHash("Jump");
+    private static readonly int AttackStateHash = Animator.StringToHash("Jump");
 
-    private static readonly int BaseColorId =
-        Shader.PropertyToID("_BaseColor");
-
-    private static readonly int ColorId =
-        Shader.PropertyToID("_Color");
+    // 몬스터 피격시 shader 조절
+    private static readonly int BaseColorId = Shader.PropertyToID("_BaseColor");
+    private static readonly int ColorId = Shader.PropertyToID("_Color");
 
     [Header("HP Bar")]
     [SerializeField] private GameObject hpBar;
