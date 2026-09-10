@@ -57,8 +57,9 @@ public class PlayerData : ScriptableObject
     [SerializeField, Min(0)] private int attackDamagePerLevel = 2;
     public int AttackDamagePerLevel => attackDamagePerLevel;
 
+    // 현재는 고정 수치
     [SerializeField]
-    private int[] requiredExpByLevel =
+    private int[] maxExpByLevel =
     {
         100,
         200,
@@ -68,16 +69,17 @@ public class PlayerData : ScriptableObject
 
     public int MaxLevel => 5;
 
-    public int GetRequiredExp(int level)
+    // 레벨 당 얻어야 하는 경험치량 계산
+    public int GetMaxExp(int level)
     {
         if (level < 1 || level >= MaxLevel)
             return 0;
 
         int index = level - 1;
 
-        if (requiredExpByLevel == null || index >= requiredExpByLevel.Length)
+        if (maxExpByLevel == null || index >= maxExpByLevel.Length)
             return 0;
 
-        return Mathf.Max(1, requiredExpByLevel[index]);
+        return Mathf.Max(1, maxExpByLevel[index]);
     }
 }

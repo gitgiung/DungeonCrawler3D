@@ -19,11 +19,11 @@ MonoBehaviour:
     m_Bits: 256
   detectRange: 4
   loseTargetRange: 6
-  attackDamage: 40
+  attackDamage: 20
   attackDelay: 2
   attackRange: 2
   attackWidth: 1.5
   attackHeight: 2
   stunTime: 1.5
-  maxHP: 100
+  maxHP: 50
   moveSpeed: 3

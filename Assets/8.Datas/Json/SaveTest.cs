@@ -11,7 +11,7 @@ public class SaveTest : MonoBehaviour
         if (Keyboard.current == null)
             return;
 
-        if (Keyboard.current.f5Key.wasPressedThisFrame)
+        if (Keyboard.current.f5Key.wasPressedThisFrame) // = GetButtonDown
         {
             Save();
         }

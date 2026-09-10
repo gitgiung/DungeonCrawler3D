@@ -2,8 +2,10 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+// View: Model에서 관리하는 데이터를 읽고 사용자에게 표시
 public class PlayerView : MonoBehaviour
 {
+    // Animator에서 문자열로 재생 시 어차피 내부적으로 해시 변환하기 때문에 미리 캐싱
     private static readonly int IdleStateHash = Animator.StringToHash("S&S_Idle");
     private static readonly int MoveStateHash = Animator.StringToHash("S&S_Run");
     private static readonly int SprintStateHash = Animator.StringToHash("S&S_ShieldRushLoop");
@@ -15,6 +17,8 @@ public class PlayerView : MonoBehaviour
 
     [Header("HP Bar")]
     [SerializeField] private Image hpImg;
+    [SerializeField] private TMP_Text currentHpText;
+    [SerializeField] private TMP_Text maxHpText;
 
     [Header("EXP Bar")]
     [SerializeField] private Image expImg;
@@ -36,9 +40,9 @@ public class PlayerView : MonoBehaviour
         model.OnLevelChanged += UpdateLevel;
         model.OnStatsChanged += UpdateStats;
 
-        UpdateHP(model.CurrentHP);
+        UpdateHP(model.CurrentHP, model.MaxHP);
         UpdateGold(model.Gold);
-        UpdateExp(model.Exp);
+        UpdateExp(model.Exp, model.MaxExp);
         UpdateLevel(model.Level);
     }
 
@@ -48,30 +52,32 @@ public class PlayerView : MonoBehaviour
     }
 
     // ***UI***
-    private void UpdateHP(int currentHp)
+    private void UpdateHP(int currentHp, int maxHp)
     {
-        hpImg.fillAmount = (float)currentHp / model.MaxHP;
+        hpImg.fillAmount = (float)currentHp / maxHp;
+        currentHpText.text = $"{currentHp}";
+        maxHpText.text = $"{maxHp}";
     }
 
-    private void UpdateExp(int exp)
+    private void UpdateExp(int exp, int maxExp)
     {
-        expImg.fillAmount = (float)exp / model.RequiredExp;
+        expImg.fillAmount = (float)exp / maxExp;
     }
 
     private void UpdateGold(int gold)
     {
-        currentGold.text = $"{model.Gold}";
+        currentGold.text = $"{gold}";
     }
 
     private void UpdateLevel(int level)
     {
-        currentLevel.text = $"{model.Level}";
+        currentLevel.text = $"{level}";
     }
 
     private void UpdateStats()
     {
-        UpdateHP(model.CurrentHP);
-        UpdateExp(model.Exp);
+        UpdateHP(model.CurrentHP, model.MaxHP);
+        UpdateExp(model.Exp, model.MaxExp);
     }
 
     private void OnDestroy()

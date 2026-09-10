@@ -6,6 +6,7 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     private PlayerData data;
+    private PlayerModel model;
     private CharacterController characterController;
     private PlayerJump jump;
     private PlayerDash dash;
@@ -23,10 +24,11 @@ public class PlayerMovement : MonoBehaviour
         dash = GetComponent<PlayerDash>();
     }
 
-    public void Initialize(PlayerData data)
+    public void Init(PlayerData data, PlayerModel model)
     {
         this.data = data;
-        moveSpeed = data.WalkSpeed;
+        this.model = model;
+        moveSpeed = model.WalkSpeed;
     }
 
     public void SetCanMove(bool value)
@@ -43,7 +45,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void SetSprint(bool sprint)
     {
-        moveSpeed = sprint ? data.SprintSpeed : data.WalkSpeed;
+        moveSpeed = sprint ? model.SprintSpeed : model.WalkSpeed;
     }
 
     public void Tick()

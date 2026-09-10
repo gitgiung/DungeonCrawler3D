@@ -3,14 +3,20 @@ using UnityEngine;
 public class PlayerCombat : MonoBehaviour
 {
     private PlayerData data;
+    private PlayerModel model;
 
-    public void Initialize(PlayerData data)
+    public void Initialize(PlayerData data, PlayerModel model)
     {
         this.data = data;
+        this.model = model;
     }
 
     public void Attack()
     {
+        if (data == null ||  model == null)
+            return;
+
+        int damage = model.AttackDamage;
         Vector3 pos = transform.position;
 
         pos += transform.forward * data.AttackRange;
@@ -27,8 +33,8 @@ public class PlayerCombat : MonoBehaviour
         {
             if (collider.TryGetComponent<IDamageable>(out IDamageable target))
             {
-                target.TakeDamage(data.AttackDamage);
-                DamageFontManager.Instance.CreateText(data.AttackDamage, collider.transform.position);
+                target.TakeDamage(damage);
+                DamageFontManager.Instance.CreateText(damage, collider.transform.position);
                 break;
             }
         }

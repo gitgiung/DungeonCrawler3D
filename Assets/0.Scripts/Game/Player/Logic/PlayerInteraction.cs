@@ -9,6 +9,8 @@ public class PlayerInteraction : MonoBehaviour
     [SerializeField] private TMP_Text interactionText;
     [SerializeField] private Vector3 uiOffset = new Vector3(0f, 0f, 0f);
 
+    public bool IsFKeyPressed { get; set; }
+
     [SerializeField, Range(1f, 5f)]
     private float interactRadius = 1f;
 
@@ -91,8 +93,10 @@ public class PlayerInteraction : MonoBehaviour
 
     private void HideInteractionUI()
     {
-        UI_F.gameObject.SetActive(false);
-        interactionText.text = string.Empty;
+        if (UI_F != null)
+            UI_F.gameObject.SetActive(false);
+        if (interactionText != null)
+            interactionText.text = string.Empty;
     }
 
     private void UpdatePosition()

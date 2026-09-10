@@ -6,6 +6,8 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(PlayerJump))]
 [RequireComponent(typeof(PlayerDash))]
 [RequireComponent(typeof(CameraController))]
+
+// PlayerController: Model, View, States, Logic, Input Check의 허브
 public class PlayerController : MonoBehaviour, IDamageable
 {
     private IState currentState;
@@ -68,15 +70,16 @@ public class PlayerController : MonoBehaviour, IDamageable
         AttackState = new PlayerAttackState(this);
         HitState = new PlayerHitState(this);
 
+        // 어떤 상태에서든 죽는 상태로 전환하기에 여기서 구현
         Model.OnDeathStateChanged += HandleDeathStateChanged;
         Model.Init(data);
 
 
         View.Init(Model);
-        Movement.Initialize(data);
-        Jump.Initialize(data);
-        Dash.Initialize(data);
-        Combat.Initialize(data);
+        Movement.Init(Data, Model);
+        Jump.Initialize(Data);
+        Dash.Initialize(Data);
+        Combat.Initialize(Data, Model);
     }
 
     private void Start()
@@ -145,10 +148,16 @@ public class PlayerController : MonoBehaviour, IDamageable
         Movement.SetSprint(SprintInput);
     }
 
+    private void OnInteraction(InputValue value)
+    {
+
+    }
+
     public void TakeDamage(int damage)
     {
         bool damageApplied = Model.ReduceHP(damage);
 
+        // 데미지를 받을 수 없는 상태거나 죽은 상태면 리턴
         if (!damageApplied || Model.IsDead)
             return;
 
@@ -163,6 +172,7 @@ public class PlayerController : MonoBehaviour, IDamageable
             return;
         }
 
+        // 부활 시스템 적용 가능성
         if (currentState == DeadState)
             ChangeState(IdleState);
     }
