@@ -144,7 +144,7 @@ public class Monster : MonoBehaviour, IDamageable
 
         View.PlayDamageFlash();
 
-        // 사망은 공격 애니메이션보다 우선한다.
+        // 사망은 공격 애니메이션보다 우선한다
         if (Model.IsDead)
         {
             isDead = true;
@@ -155,7 +155,7 @@ public class Monster : MonoBehaviour, IDamageable
             return;
         }
 
-        // 공격 애니메이션 중에는 HitState로 전환하지 않는다.
+        // 공격 애니메이션 중에는 HitState로 전환하지 않는다
         if (object.ReferenceEquals(currentState, AttackState) &&
             AttackState.IsAnimationLocked)
         {
@@ -173,6 +173,7 @@ public class Monster : MonoBehaviour, IDamageable
         Agent.SetDestination(destination);
     }
 
+    //  Chase, Patrol 제외하고는 Nav 사용 중단
     public void StopMoving()
     {
         if (!CanUseAgent())
@@ -198,6 +199,7 @@ public class Monster : MonoBehaviour, IDamageable
         Agent.speed = data.MoveSpeed * multiplier;
     }
 
+    // 완전시 Death()호출 전 Agent, collider, rigidbody 비활성화
     public void PrepareForDeath()
     {
         StopMoving();
@@ -226,6 +228,7 @@ public class Monster : MonoBehaviour, IDamageable
         Destroy(gameObject, 5f);
     }
 
+    // Nav 사용할지 말지 결정
     private bool CanUseAgent()
     {
         return Agent != null &&

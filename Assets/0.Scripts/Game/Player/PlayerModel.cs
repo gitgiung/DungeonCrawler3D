@@ -201,7 +201,7 @@ public class PlayerModel : MonoBehaviour
             ? 0
             : Mathf.Clamp(exp, 0, maxExp - 1);
 
-        // 아래에서 변동을 검사해서 이벤트를 알리기 때문에 여기서 알릴 필요 없음
+        // 데이터 로드 떄는 HP 변경 알릴 필요 없음
         bool statsChanged = CalculateStats(false, false);
         SetHP(currentHP, false);
 

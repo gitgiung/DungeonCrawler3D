@@ -108,9 +108,7 @@ public class Boss : MonoBehaviour
             transform.position) < dashDistance)
         {
             transform.position +=
-                dashDirection
-                * dashSpeed
-                * Time.deltaTime;
+                dashDirection * (dashSpeed * Time.deltaTime);
 
             yield return null;
         }

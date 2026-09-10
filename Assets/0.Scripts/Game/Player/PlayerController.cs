@@ -8,6 +8,7 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(CameraController))]
 
 // PlayerController: Model, View, States, Logic, Input Check의 허브
+// StateMachine, InputReader 그리고 CameraController로 분리 가능
 public class PlayerController : MonoBehaviour, IDamageable
 {
     private IState currentState;
@@ -146,11 +147,6 @@ public class PlayerController : MonoBehaviour, IDamageable
     {
         SprintInput = value.Get<float>() > 0f;
         Movement.SetSprint(SprintInput);
-    }
-
-    private void OnInteraction(InputValue value)
-    {
-
     }
 
     public void TakeDamage(int damage)

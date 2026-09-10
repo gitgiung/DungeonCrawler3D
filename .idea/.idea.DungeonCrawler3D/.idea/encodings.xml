@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding" addBOMForNewFiles="with BOM under Windows, with no BOM otherwise">
+    <file url="file://$PROJECT_DIR$/Assets/0.Scripts/Game/GameEvents.cs" charset="x-windows-949" />
+    <file url="file://$PROJECT_DIR$/Assets/0.Scripts/Game/Monster/Normal Mob/Monster.cs" charset="x-windows-949" />
+    <file url="file://$PROJECT_DIR$/Assets/0.Scripts/Game/Player/Logic/PlayerInteraction.cs" charset="x-windows-949" />
+    <file url="file://$PROJECT_DIR$/Assets/0.Scripts/Game/Player/PlayerController.cs" charset="x-windows-949" />
+    <file url="file://$PROJECT_DIR$/Assets/0.Scripts/Game/Player/PlayerModel.cs" charset="x-windows-949" />
+    <file url="file://$PROJECT_DIR$/Assets/0.Scripts/Game/Player/PlayerView.cs" charset="x-windows-949" />
+    <file url="file://$PROJECT_DIR$/Assets/0.Scripts/Save/SaveTest.cs" charset="x-windows-949" />
+    <file url="file://$PROJECT_DIR$/Assets/0.Scripts/UI/Inventory/Inventory.cs" charset="x-windows-949" />
     <file url="file://$PROJECT_DIR$/Assets/0.Scripts/UI/Manager/QuestManager.cs" charset="x-windows-949" />
+    <file url="file://$PROJECT_DIR$/Assets/8.Datas/PlayerData/PlayerData.cs" charset="x-windows-949" />
   </component>
 </project>

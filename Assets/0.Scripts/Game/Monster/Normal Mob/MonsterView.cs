@@ -6,7 +6,7 @@ public class MonsterView : MonoBehaviour
 {
     private static readonly int AttackStateHash = Animator.StringToHash("Jump");
 
-    // ¸ó½ºÅÍ ÇÇ°İ½Ã shader Á¶Àı
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½Ç°İ½ï¿½ shader ï¿½ï¿½ï¿½ï¿½
     private static readonly int BaseColorId = Shader.PropertyToID("_BaseColor");
     private static readonly int ColorId = Shader.PropertyToID("_Color");
 
@@ -21,6 +21,7 @@ public class MonsterView : MonoBehaviour
     [SerializeField, Min(0.01f)]
     private float damageFlashDuration = 0.1f;
 
+    // Damage Flash
     private Renderer[] renderers;
     private MaterialPropertyBlock[] originalPropertyBlocks;
     private MaterialPropertyBlock[] flashPropertyBlocks;
@@ -70,6 +71,7 @@ public class MonsterView : MonoBehaviour
         Vector3 viewportPos =
             mainCamera.WorldToViewportPoint(worldPosition);
 
+        // ì¹´ë©”ë¼ì— ë³´ì¼ ë•Œë§Œ HP Bar ë…¸ì¶œ
         bool isVisible =
             viewportPos.z > 0f &&
             viewportPos.x >= 0f &&
@@ -169,6 +171,8 @@ public class MonsterView : MonoBehaviour
     }
 
     // *** Damage Flash ***
+    // í”¼ê²© ì‹œ ì ìƒ‰ìœ¼ë¡œ ì ë©¸í•˜ë„ë¡ í•œë‹¤
+    // ì‹œê°ì  í”¼ë“œë°± ë°›ê¸° ìœ„í•´ GPT ì½”ë“œ ì‚¬ìš©
 
     private void CacheRenderers()
     {
@@ -215,7 +219,7 @@ public class MonsterView : MonoBehaviour
         if (!isActiveAndEnabled || renderers.Length == 0)
             return;
 
-        // ¿¬¼Ó ÇÇ°İ ½Ã ±âÁ¸ Á¡¸êÀ» Áß´ÜÇÏ°í ¿ø·¡ »öÀ¸·Î µÇµ¹¸°´Ù.
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½Ç°ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ß´ï¿½ï¿½Ï°ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Çµï¿½ï¿½ï¿½ï¿½ï¿½.
         if (damageFlashCoroutine != null)
         {
             StopCoroutine(damageFlashCoroutine);
