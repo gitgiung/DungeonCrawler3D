@@ -6,7 +6,7 @@ public class MonsterView : MonoBehaviour
 {
     private static readonly int AttackStateHash = Animator.StringToHash("Jump");
 
-    // ���� �ǰݽ� shader ����
+    // Damage Flash Shader 변수
     private static readonly int BaseColorId = Shader.PropertyToID("_BaseColor");
     private static readonly int ColorId = Shader.PropertyToID("_Color");
 
