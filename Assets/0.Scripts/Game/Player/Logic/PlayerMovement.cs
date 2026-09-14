@@ -12,7 +12,7 @@ public class PlayerMovement : MonoBehaviour
     private PlayerDash dash;
     private float moveSpeed;
     private Vector3 desiredDirection;
-    private Vector3 lastLookDirection = Vector3.right;
+    private Vector3 lastLookDirection;
     private bool canMove;
 
     public Vector3 LastLookDirection => lastLookDirection;
@@ -22,6 +22,8 @@ public class PlayerMovement : MonoBehaviour
         characterController = GetComponent<CharacterController>();
         jump = GetComponent<PlayerJump>();
         dash = GetComponent<PlayerDash>();
+
+        lastLookDirection = transform.forward;
     }
 
     public void Init(PlayerData data, PlayerModel model)
@@ -59,23 +61,11 @@ public class PlayerMovement : MonoBehaviour
         jump.TickGravity(deltaTime, controllerGrounded);
         bool wasDashing = dash.IsDashing;
 
-        bool airborne = jump.VerticalVelocity > 0f ||
-                        (!controllerGrounded && !jump.IsGround);
-
         Vector3 horizontalVelocity;
 
         if (wasDashing)
         {
             horizontalVelocity = dash.Velocity;
-        }
-        else if (airborne)
-        {
-            horizontalVelocity = canMove
-                ? GetGroundVelocity()
-                : Vector3.zero;
-
-            if (horizontalVelocity.sqrMagnitude > 0.001f)
-                FaceDirection(horizontalVelocity, deltaTime);
         }
         else if (canMove)
         {
