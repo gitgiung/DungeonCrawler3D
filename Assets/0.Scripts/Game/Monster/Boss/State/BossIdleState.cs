@@ -1,9 +1,9 @@
 using UnityEngine;
 
-public class BossIdleState : IState
+public class RegacyBossIdleState : IState
 {
     private Boss boss;
-    public BossIdleState(Boss boss)
+    public RegacyBossIdleState(Boss boss)
     {
         this.boss = boss;
     }
@@ -29,6 +29,6 @@ public class BossIdleState : IState
             return;
 
         boss.Target = cols[0].transform;
-        boss.ChangeState(new BossChaseState(boss));
+        boss.ChangeState(new RegacyBossChaseState(boss));
     }
 }

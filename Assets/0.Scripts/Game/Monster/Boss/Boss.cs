@@ -37,7 +37,7 @@ public class Boss : MonoBehaviour
         StartPos = transform.position;
         SetMoveSpeed(1f);
         Phase = BossPhase.Phase1;
-        ChangeState(new BossIdleState(this));
+        ChangeState(new RegacyBossIdleState(this));
     }
 
     private void Update()

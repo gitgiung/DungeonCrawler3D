@@ -1,9 +1,9 @@
 using UnityEngine;
 
-public class BossReturnState : IState
+public class RegacyBossReturnState : IState
 {
     private Boss boss;
-    public BossReturnState(Boss boss)
+    public RegacyBossReturnState(Boss boss)
     {
         this.boss = boss;
     }
@@ -27,7 +27,7 @@ public class BossReturnState : IState
         if (cols.Length > 0)
         {
             boss.Target = cols[0].transform;
-            boss.ChangeState(new BossChaseState(boss));
+            boss.ChangeState(new RegacyBossChaseState(boss));
             return;
         }
 
@@ -37,7 +37,7 @@ public class BossReturnState : IState
         {
             boss.Agent.ResetPath(); //가지고있는 이동경로 제거
 
-            boss.ChangeState(new BossIdleState(boss));
+            boss.ChangeState(new RegacyBossIdleState(boss));
         }
     }
 }

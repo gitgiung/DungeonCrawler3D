@@ -1,9 +1,9 @@
 using UnityEngine;
 
-public class BossAttackState : IState
+public class RegacyBossAttackState : IState
 {
     private Boss boss;
-    public BossAttackState(Boss boss)
+    public RegacyBossAttackState(Boss boss)
     {
         this.boss = boss;
     }
@@ -26,7 +26,7 @@ public class BossAttackState : IState
     {
         if (boss.Target == null)
         {
-            boss.ChangeState(new BossChaseState(boss));
+            boss.ChangeState(new RegacyBossChaseState(boss));
             return;
         }
 
@@ -39,7 +39,7 @@ public class BossAttackState : IState
 
         if (distance > boss.Data.AttackRange)
         {
-            boss.ChangeState(new BossChaseState(boss));
+            boss.ChangeState(new RegacyBossChaseState(boss));
             return;
         }
 

@@ -19,11 +19,6 @@ namespace Enemy
         public void Attack(Transform target);
     }
 
-    public interface IDamageable
-    {
-        public void TakeDamage(int damage);
-    }
-
     public interface IEnemyDead
     {
         public void Die();

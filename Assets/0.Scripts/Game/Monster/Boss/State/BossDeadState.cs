@@ -1,9 +1,9 @@
 using UnityEngine;
 
-public class BossDeadState : IState
+public class RegacyBossDeadState : IState
 {
     private Boss boss;
-    public BossDeadState(Boss boss)
+    public RegacyBossDeadState(Boss boss)
     {
         this.boss = boss;
     }
