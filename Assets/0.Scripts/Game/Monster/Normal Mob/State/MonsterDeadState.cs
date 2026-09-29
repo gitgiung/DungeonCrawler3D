@@ -14,6 +14,7 @@ public class MonsterDeadState : IState
         monster.View.PlayDeath();
         monster.View.HideHPBar();
 
+        monster.DropGold();
         monster.Death();
     }
 

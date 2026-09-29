@@ -10,6 +10,7 @@ public class Monster : MonoBehaviour, IDamageable
 {
     private IState currentState;
 
+    [SerializeField] private GoldPickup[] goldPrefabs;
     [SerializeField] private EnemyData data;
     public EnemyData Data => data;
 
@@ -197,6 +198,36 @@ public class Monster : MonoBehaviour, IDamageable
             return;
 
         Agent.speed = data.MoveSpeed * multiplier;
+    }
+
+    public void DropGold()
+    {
+        int amount = Random.Range(data.MinGold, data.MaxGold + 1);
+
+        GoldPickup prefab = GetGoldPrefab(amount);
+
+        Vector3 offset = new Vector3(
+            Random.Range(-0.5f, 0.5f),
+            0.2f,
+            Random.Range(-0.5f, 0.5f)
+        );
+
+        GoldPickup gold = Instantiate(
+            prefab,
+            transform.position + offset,
+            Quaternion.identity
+        );
+
+        gold.Initialize(amount);
+    }
+
+    private GoldPickup GetGoldPrefab(int amount)
+    {
+        if (amount >= 200)
+            return goldPrefabs[2];
+        if (amount >= 100)
+            return goldPrefabs[1];
+        return goldPrefabs[0];
     }
 
     // 완전시 Death()호출 전 Agent, collider, rigidbody 비활성화

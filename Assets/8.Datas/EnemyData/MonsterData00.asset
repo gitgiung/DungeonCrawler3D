@@ -27,3 +27,5 @@ MonoBehaviour:
   stunTime: 1.5
   maxHP: 50
   moveSpeed: 3
+  minGold: 50
+  maxGold: 150

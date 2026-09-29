@@ -42609,6 +42609,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 804fb6eb90f11694fb7322a31571b734, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Monster
+  goldPrefabs: []
   data: {fileID: 11400000, guid: 5a8c3553e1af13b46b83896b166ec0fb, type: 2}
 --- !u!4 &1132095903189544429
 Transform:

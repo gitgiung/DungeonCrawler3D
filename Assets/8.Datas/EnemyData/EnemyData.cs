@@ -56,5 +56,10 @@ public class EnemyData : ScriptableObject
     [SerializeField] private int moveSpeed;
     public int MoveSpeed { get { return moveSpeed; } }
 
-    
+    [Header("Drop")]
+    [SerializeField] private int minGold;
+    public int MinGold => minGold;
+    [SerializeField] private int maxGold;
+    public int MaxGold => maxGold;
+
 }
