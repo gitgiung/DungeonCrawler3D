@@ -25,7 +25,7 @@ MonoBehaviour:
   attackWidth: 1.5
   attackHeight: 2
   stunTime: 1.5
-  maxHP: 50
+  maxHP: 15
   moveSpeed: 3
-  minGold: 50
-  maxGold: 150
+  minGold: 10
+  maxGold: 20

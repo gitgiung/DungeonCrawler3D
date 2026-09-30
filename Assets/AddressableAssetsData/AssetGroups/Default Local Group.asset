@@ -14,13 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.Addressables.Editor::UnityEditor.AddressableAssets.Settings.AddressableAssetGroup
   m_GroupName: Default Local Group
   m_GUID: 6d67a3a26720e394f8793f275fb1e929
-  m_SerializeEntries:
-  - m_GUID: 25884b63779b8b049b01f2d8d839108f
-    m_Address: Melee Skeleton
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Enemy
-    FlaggedDuringContentUpdateRestriction: 0
+  m_SerializeEntries: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 0659a1475142457458951ec2cca23325, type: 2}
   m_SchemaSet:

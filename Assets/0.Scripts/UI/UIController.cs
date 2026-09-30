@@ -8,6 +8,7 @@ public class UIController : Singleton<UIController>
     public EquipmentSystem equipmentSystem;
     public MoveItem moveItem;
     public Canvas canvas;
+    public Transform monsterUICanvas;
 
     private void Update()
     {

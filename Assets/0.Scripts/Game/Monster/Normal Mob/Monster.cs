@@ -207,9 +207,9 @@ public class Monster : MonoBehaviour, IDamageable
         GoldPickup prefab = GetGoldPrefab(amount);
 
         Vector3 offset = new Vector3(
-            Random.Range(-0.5f, 0.5f),
+            Random.Range(-1f, 1f),
             0.2f,
-            Random.Range(-0.5f, 0.5f)
+            Random.Range(-1f, 1f)
         );
 
         GoldPickup gold = Instantiate(

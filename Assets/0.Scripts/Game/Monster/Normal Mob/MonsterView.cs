@@ -12,8 +12,7 @@ public class MonsterView : MonoBehaviour
 
     [Header("HP Bar")]
     [SerializeField] private GameObject hpBar;
-    [SerializeField] private Transform uiCanvas;
-    [SerializeField] private Vector3 hpOffset = new Vector3(0f, 2f, 0f);
+    [SerializeField] private Vector3 hpOffset = new(0f, 2f, 0f);
 
     [Header("Damage Flash")]
     [SerializeField] private Color damageFlashColor = Color.red;
@@ -92,7 +91,7 @@ public class MonsterView : MonoBehaviour
 
     private void CreateHPBar()
     {
-        hpBarInstance = Instantiate(hpBar, uiCanvas);
+        hpBarInstance = Instantiate(hpBar, UIController.Instance.monsterUICanvas);
 
         hpImg = hpBarInstance.transform
             .Find("CurrentHP")
