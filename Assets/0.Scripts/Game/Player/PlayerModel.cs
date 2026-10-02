@@ -17,12 +17,16 @@ public class PlayerModel : MonoBehaviour
     private int equipmentDefence;
     private float equipmentSpeed;
 
+    private int pickupAttackBonus;
+    private float pickupMoveSpeedBonus;
+    private int pickupMaxHPBonus;
+
     public int MaxHP { get; private set; }
     public int AttackDamage { get; private set; }
     public int Defence { get; private set; }
     public float WalkSpeed { get; private set; }
     public float SprintSpeed { get; private set; }
-    
+
     public bool IsDead { get; private set; }
     public int CurrentHP { get; private set; }
     public int Gold { get; private set; }
@@ -42,10 +46,15 @@ public class PlayerModel : MonoBehaviour
         equipmentDamage = 0;
         equipmentSpeed = 0f;
 
+        pickupMaxHPBonus = 0;
+        pickupAttackBonus = 0;
+        pickupMoveSpeedBonus = 0;
+
         CalculateStats(false, false);
         SetHP(MaxHP, false);
     }
 
+    // 골드 획득
     public void AddGold(int amount)
     {
         if (amount <= 0)
@@ -55,6 +64,7 @@ public class PlayerModel : MonoBehaviour
         OnGoldChanged?.Invoke(Gold);
     }
 
+    // 경험치 획득
     public void AddExp(int amount)
     {
         if (amount <= 0 || data == null)
@@ -100,6 +110,7 @@ public class PlayerModel : MonoBehaviour
     }
 
     // notify: 이벤트를 알려야 할 때만 알리기 위한 매개변수
+    // HP 변동 계산
     private void SetHP(int value, bool notify = true)
     {
         // 세팅할 HP는 0 이상 MaxHP 이하
@@ -120,6 +131,7 @@ public class PlayerModel : MonoBehaviour
             OnDeathStateChanged?.Invoke(IsDead);
     }
 
+    // HP 감소
     public bool ReduceHP(int damage)
     {
         if (damage <= 0 || IsDead)
@@ -129,6 +141,28 @@ public class PlayerModel : MonoBehaviour
         return true;
     }
 
+    // 스탯 픽업 아이템 추가 스탯
+    public void AddPickupStat(PlayerStatType statType, float amount)
+    {
+        switch (statType)
+        {
+            case PlayerStatType.AttackPower:
+                pickupAttackBonus += Mathf.RoundToInt(amount);
+                break;
+
+            case PlayerStatType.MoveSpeed:
+                pickupMoveSpeedBonus += amount;
+                break;
+
+            case PlayerStatType.MaxHP:
+                pickupMaxHPBonus += Mathf.RoundToInt(amount);
+                break;
+        }
+
+        CalculateStats(false);
+    }
+
+    // 장비 장착 추가 스탯
     public void SetEquipmentStats(int maxhp, int damage, int defence, float speed)
     {
         equipmentMaxHP = Mathf.Max(0, maxhp);
@@ -142,6 +176,7 @@ public class PlayerModel : MonoBehaviour
         CalculateStats(false);
     }
 
+    // 최종 스탯 계산
     private bool CalculateStats(bool levelUpHeal, bool notify = true)
     {
         int previousMaxHP = MaxHP;
@@ -150,11 +185,11 @@ public class PlayerModel : MonoBehaviour
 
         // 레벨, 장비 장착으로 인한 최종 스탯 계산
         int finalMaxHP = Mathf.Max(1,
-            data.MaxHP + statsPerLevel * data.MaxHpPerLevel + equipmentMaxHP);
+            data.MaxHP + statsPerLevel * data.MaxHpPerLevel + equipmentMaxHP + pickupMaxHPBonus);
         int finalDamage = Mathf.Max(0,
-            data.AttackDamage + statsPerLevel * data.AttackDamagePerLevel + equipmentDamage);
+            data.AttackDamage + statsPerLevel * data.AttackDamagePerLevel + equipmentDamage + pickupAttackBonus);
         int finalDefence = Mathf.Max(0, equipmentDefence);
-        float finalWalkSpeed = Mathf.Max(0f, data.WalkSpeed + equipmentSpeed);
+        float finalWalkSpeed = Mathf.Max(0f, data.WalkSpeed + equipmentSpeed + pickupMoveSpeedBonus);
         float finalSprintSpeed = Mathf.Max(0f, data.SprintSpeed + equipmentSpeed);
 
         // 스탯이 바뀌었다

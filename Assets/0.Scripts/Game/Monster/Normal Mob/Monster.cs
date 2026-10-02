@@ -10,7 +10,7 @@ public class Monster : MonoBehaviour, IDamageable
 {
     private IState currentState;
 
-    [SerializeField] private GoldPickup[] goldPrefabs;
+    [SerializeField] private GoldPickupEffect[] goldPrefabs;
     [SerializeField] private EnemyData data;
     public EnemyData Data => data;
 
@@ -204,29 +204,51 @@ public class Monster : MonoBehaviour, IDamageable
     {
         int amount = Random.Range(data.MinGold, data.MaxGold + 1);
 
-        GoldPickup prefab = GetGoldPrefab(amount);
+        if (amount <= 0)
+            return;
+
+        GoldPickupEffect prefab = GetGoldPrefab(amount);
+
+        if (prefab == null)
+            return;
 
         Vector3 offset = new Vector3(
             Random.Range(-1f, 1f),
-            0.2f,
+            0f,
             Random.Range(-1f, 1f)
         );
 
-        GoldPickup gold = Instantiate(
+        Vector3 spawnPosition = transform.position + Vector3.up * 0.2f;
+        Vector3 targetPosition = transform.position + offset;
+
+        GoldPickupEffect gold = Instantiate(
             prefab,
-            transform.position + offset,
+            spawnPosition,
             Quaternion.identity
         );
 
-        gold.Initialize(amount);
+        // 실제 골드 가치 설정
+        gold.SetAmount(amount);
+
+        // 드롭 연출
+        GoldDropMotion dropMotion =
+            gold.GetComponent<GoldDropMotion>();
+
+        if (dropMotion != null)
+            dropMotion.Play(targetPosition);
     }
 
-    private GoldPickup GetGoldPrefab(int amount)
+    private GoldPickupEffect GetGoldPrefab(int amount)
     {
+        if (goldPrefabs == null || goldPrefabs.Length < 3)
+            return null;
+
         if (amount >= 200)
             return goldPrefabs[2];
+
         if (amount >= 100)
             return goldPrefabs[1];
+
         return goldPrefabs[0];
     }
 

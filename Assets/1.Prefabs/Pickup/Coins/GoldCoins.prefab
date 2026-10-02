@@ -9,8 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 946740372238995289}
+  - component: {fileID: 8924964907880066033}
   - component: {fileID: 2585186293043270023}
-  - component: {fileID: 5275390002079140990}
   m_Layer: 0
   m_Name: PickupTrigger
   m_TagString: Untagged
@@ -33,6 +33,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 8262840081462826832}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8924964907880066033
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5848470125232170482}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bff72a83b96cfa640a9575e6c1017a25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PickupItem
 --- !u!135 &2585186293043270023
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -54,18 +66,6 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.05
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &5275390002079140990
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5848470125232170482}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d3afcbf799850b646869568cf5bdc481, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::GoldPickupTrigger
 --- !u!1 &7442980520393906772
 GameObject:
   m_ObjectHideFlags: 0
@@ -75,7 +75,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8262840081462826832}
-  - component: {fileID: 2500336070928346576}
+  - component: {fileID: 2574782547037140876}
+  - component: {fileID: 4518874285294364480}
   - component: {fileID: 1173375717800306353}
   - component: {fileID: 3051943642428092196}
   - component: {fileID: 1197212319154098589}
@@ -103,7 +104,7 @@ Transform:
   - {fileID: 946740372238995289}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2500336070928346576
+--- !u!114 &2574782547037140876
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -112,9 +113,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 7442980520393906772}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 409cdcd7a0cb8b94c9a8c4ec84aa4e83, type: 3}
+  m_Script: {fileID: 11500000, guid: 15edeb68aebfe7248b8a463f7061c0cd, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::GoldPickup
+  m_EditorClassIdentifier: Assembly-CSharp::GoldPickupEffect
+  amount: 200
+--- !u!114 &4518874285294364480
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7442980520393906772}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ffdd24425f70054f96aceb8a77bc5b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GoldDropMotion
+  jumpPower: 1.5
+  jumpDuration: 0.6
 --- !u!33 &1173375717800306353
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -191,7 +207,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.04, y: 0.003, z: 0.04}
+  m_Size: {x: 0.04, y: 0.02, z: 0.04}
   m_Center: {x: 0, y: 0.01, z: 0}
 --- !u!54 &-634478935017221081
 Rigidbody:
