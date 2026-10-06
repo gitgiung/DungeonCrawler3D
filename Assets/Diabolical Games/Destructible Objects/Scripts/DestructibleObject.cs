@@ -66,7 +66,7 @@ public class DestructibleObject : MonoBehaviour
     private float pitchVariation;
     
     private GameObject debris;
-    private new Rigidbody rigidbody;
+    private Rigidbody rigidbody;
 
     public void Break(){
         float velocityMagnitude = rigidbody.linearVelocity.magnitude;

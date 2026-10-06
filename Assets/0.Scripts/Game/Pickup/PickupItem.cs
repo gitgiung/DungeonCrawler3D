@@ -34,7 +34,7 @@ public class PickupItem : MonoBehaviour
     {
         if (isPickedUp)
         {
-            Debug.Log("isPickedUp이 문제야");
+            Debug.Log("이미 주운 것");
             return;
         }
 
@@ -45,7 +45,7 @@ public class PickupItem : MonoBehaviour
 
         if (playerModel == null)
         {
-            Debug.Log("모델이 없어");
+            Debug.Log("model is null");
             return;
         }
             

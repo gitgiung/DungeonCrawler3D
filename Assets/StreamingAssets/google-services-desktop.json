@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "681749733636",
+    "firebase_url": "https://dungeoncrawler01-e4cb8-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "dungeoncrawler01-e4cb8",
+    "storage_bucket": "dungeoncrawler01-e4cb8.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:681749733636:android:302dc1a3f4b2c7a0883051",
+        "android_client_info": {
+          "package_name": "com.Samkim.Dungeons"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCCv-XVkfZy1yM4uVX_0FhP2bXOVF7zZsU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
