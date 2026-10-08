@@ -30,6 +30,7 @@ public class StatPickupEffect : PickupEffect
         if (amount <= 0f)
             return false;
 
+        Debug.Log($"{statType}(이)가 {amount}만큼 증가함");
         playerModel.AddPickupStat(statType, amount);
 
         return true;

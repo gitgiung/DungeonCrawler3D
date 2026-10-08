@@ -149,6 +149,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1604055713392326073}
   - component: {fileID: 6596029594228153901}
+  - component: {fileID: 1640273877936003766}
   - component: {fileID: -6284140536261398006}
   m_Layer: 0
   m_Name: StatOrb
@@ -188,6 +189,30 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::StatPickupEffect
   statType: 2
   amount: 10
+--- !u!114 &1640273877936003766
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2897322919697648871}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76081ad89676f2047b69eb0e277875e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OrbMovement
+  jumpPower: 1.5
+  jumpDuration: 0.6
+  dropRadius: 0.7
+  landingHeight: 0.3
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  floatingHeight: 0.25
+  floatingDuration: 1.2
+  visual: {fileID: 2122330025661873531}
+  pulseScale: 1.1
+  pulseDuration: 0.8
 --- !u!54 &-6284140536261398006
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -382,7 +407,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2122330025661873531}
-  - component: {fileID: 6132597020500577644}
   m_Layer: 0
   m_Name: Visual
   m_TagString: Untagged
@@ -407,30 +431,6 @@ Transform:
   - {fileID: 6265348007461938225}
   m_Father: {fileID: 1604055713392326073}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6132597020500577644
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6874803419480989001}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 76081ad89676f2047b69eb0e277875e9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::OrbMovement
-  jumpPower: 1.5
-  jumpDuration: 0.6
-  dropRadius: 0.7
-  landingHeight: 0.3
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  floatingHeight: 0.25
-  floatingDuration: 1.2
-  visual: {fileID: 2122330025661873531}
-  pulseScale: 1.1
-  pulseDuration: 0.8
 --- !u!1001 &6268335838578059699
 PrefabInstance:
   m_ObjectHideFlags: 0

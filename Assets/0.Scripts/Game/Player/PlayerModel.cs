@@ -190,7 +190,7 @@ public class PlayerModel : MonoBehaviour
             data.AttackDamage + statsPerLevel * data.AttackDamagePerLevel + equipmentDamage + pickupAttackBonus);
         int finalDefence = Mathf.Max(0, equipmentDefence);
         float finalWalkSpeed = Mathf.Max(0f, data.WalkSpeed + equipmentSpeed + pickupMoveSpeedBonus);
-        float finalSprintSpeed = Mathf.Max(0f, data.SprintSpeed + equipmentSpeed);
+        float finalSprintSpeed = Mathf.Max(0f, data.SprintSpeed + equipmentSpeed + pickupMoveSpeedBonus);
 
         // ½ºÅÈÀÌ ¹Ù²î¾ú´Ù
         bool statsChanged =
