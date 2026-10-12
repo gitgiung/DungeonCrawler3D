@@ -313,6 +313,7 @@ GameObject:
   - component: {fileID: 627541410}
   - component: {fileID: 627541409}
   - component: {fileID: 627541411}
+  - component: {fileID: 627541412}
   m_Layer: 0
   m_Name: FirebaseManager
   m_TagString: Untagged
@@ -359,6 +360,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d48b21ced261ead4bbabaa504fd75679, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AuthManager
+--- !u!114 &627541412
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 627541408}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a999b58061abb38439eb1f33df695dac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DatabaseManager
 --- !u!1 &935360307
 GameObject:
   m_ObjectHideFlags: 0

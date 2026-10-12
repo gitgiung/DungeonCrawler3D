@@ -63,8 +63,29 @@ MonoBehaviour:
   despawnType: 1
   despawnPercentage: 100
   despawnTime: 5
-  dropEntries: []
+  dropEntries:
+  - type: 2
+    prefab: {fileID: 0}
+    weight: 41
+  - type: 1
+    prefab: {fileID: 6906475665928029095, guid: 7ba2f60c3aa4f2e49a3f8374693ad2a5, type: 3}
+    weight: 3
+  - type: 1
+    prefab: {fileID: 5019413344149302072, guid: 7d254daa50671e340bbbfdfc8afadc12, type: 3}
+    weight: 3
+  - type: 1
+    prefab: {fileID: 794105862553054858, guid: 6f2377d8dc182af4cb6e7523cf0ac848, type: 3}
+    weight: 3
+  - type: 0
+    prefab: {fileID: 0}
+    weight: 50
   dropPoint: {fileID: 0}
+  minGold: 10
+  maxGold: 50
+  goldPrefabs:
+  - {fileID: 3636800698247572911, guid: 61837a6d304ac5947b7750142bc2014e, type: 3}
+  - {fileID: 1055000390863789770, guid: 9f98149765e01334b99196610c2fd693, type: 3}
+  - {fileID: 2574782547037140876, guid: bbea6a51271089d46a14417bcd82af70, type: 3}
   audioClips:
   - {fileID: 8300000, guid: 80be3b52e41ff424b8fc1ed2d65d3b84, type: 3}
   - {fileID: 8300000, guid: eef2567c2e56abd41a5e5c8bc5a3db0b, type: 3}
