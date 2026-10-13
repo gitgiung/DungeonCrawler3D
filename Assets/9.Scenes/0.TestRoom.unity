@@ -24546,7 +24546,7 @@ GameObject:
   - component: {fileID: 1429114990}
   - component: {fileID: 1429114989}
   - component: {fileID: 1429114988}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Waaaall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -61505,6 +61505,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 149099353525d7746977cf41767583a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerCombat
+  attackAngle: 120
+  obstacleLayer:
+    serializedVersion: 2
+    m_Bits: 4160
 --- !u!114 &8353505889464187691
 MonoBehaviour:
   m_ObjectHideFlags: 0
